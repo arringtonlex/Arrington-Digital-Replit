@@ -1,13 +1,16 @@
 # Hero reel concept footage
 
-The homepage hero uses the supplied 12.8-second loop at `public/videos/adx-hero-reel.mp4`.
-The reel combines footage from the current Arrington Digital website with the following
-Pexels stock clips (checked against the Pexels license):
+The homepage hero uses a muted, 14-second five-scene loop at
+`public/videos/adx-hero-reel.mp4`. It is edited from the current Arrington Digital
+homepage hero video:
 
-- Aerial view of hillside house with lush greenery: https://www.pexels.com/video/aerial-view-of-hillside-house-with-lush-greenery-37177410/
-- Aerial view of Kingston’s urban landscape: https://www.pexels.com/video/aerial-view-of-kingston-s-urban-landscape-37177254/
-- Aerial view of tropical beach resort at sunrise: https://www.pexels.com/video/aerial-view-of-tropical-beach-resort-at-sunrise-33246936/
+- Source: https://framerusercontent.com/assets/IPRhheMSXYOMRlj6YBVKfVlztWw.mp4
+- ADx in motion — team scene
+- Hospitality & Tourism — café worker in an apron
+- Pharmaceutical & Life Sciences — lab scene
+- Manufacturing — production line
+- Cloud, Security & Data — technology screens
 
-Any non-ADx property footage is illustrative stock only. It does not represent an ADx
-client, a named property, or the location of a resort. The Kingston aerial clips are
-Pexels footage. The small on-page concept-footage note is intentional.
+The labels describe work and industries, not locations. The footage is illustrative,
+not a client endorsement. Confirm the reuse rights for all source footage before
+publishing the concept.

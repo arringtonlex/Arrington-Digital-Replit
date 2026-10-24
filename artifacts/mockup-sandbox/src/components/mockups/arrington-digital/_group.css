@@ -28,6 +28,7 @@
 .adx-home .adx-rule { border-color: var(--adx-line); }
 .adx-home .adx-kicker { display: flex; align-items: center; gap: 11px; font: 500 10px/1.4 "Chivo Mono", monospace; letter-spacing: .14em; }
 .adx-home .adx-kicker:before { width: 22px; height: 1px; background: var(--adx-orange); content: ""; }
+.adx-home .adx-hero-kicker .adx-kicker:before { background: var(--adx-paper); }
 .adx-home .adx-action { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 50px; padding: 0 21px; border: 1px solid transparent; font-size: 13px; font-weight: 600; transition: background .2s, color .2s, border-color .2s, transform .2s; }
 .adx-home .adx-action:hover { transform: translateY(-2px); }
 .adx-home .adx-action-primary { color: #fff; background: var(--adx-orange); }

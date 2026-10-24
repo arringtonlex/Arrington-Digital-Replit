@@ -1,0 +1,1 @@
+- [ADx positioning](adx-positioning.md) — Keep the parent brand U.S. + Jamaica; reserve Jamaica specifics for Arrington Digital Limited.
