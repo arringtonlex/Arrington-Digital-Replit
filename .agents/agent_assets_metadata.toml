@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "1TwGaCJtEzqKLAr0SSO4e"
+uri = "file://generated-artifacts/arrington-digital-framer-handoff.zip"
+type = "unspecified"
+title = "Arrington Digital — Framer Handoff ZIP"
+description = "Website source, all images and the hero video, sitemap, and a Framer handoff note. Not a native Framer project import."
+logical_id = "ddaad6aa-a09f-47a7-8085-9559dd952a1d"
+content_hash = "sha256:e07931279f6f643d1f350f025f55d68fb8f3bf99a90539f3244fe59823c7a739"
+size = 44090380
+mtime_ms = 1792826922837
+storage_uri = "gcs://replit-rams-assets-reed/rams/assets/repl:6b7d1bc6-a938-4707-bb28-d921c5f999fc/ddaad6aa-a09f-47a7-8085-9559dd952a1d/940c0877-c055-46ec-9352-f3b57d8064da"
+storage_version_token = "1792826929800777"
+content_type = "application/octet-stream"

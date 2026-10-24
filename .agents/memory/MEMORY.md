@@ -1,1 +1,2 @@
 - [ADx positioning](adx-positioning.md) — Keep the parent brand U.S. + Jamaica; reserve Jamaica specifics for Arrington Digital Limited.
+- [Framer handoff](framer-handoff.md) — Arrington Digital is being built in Framer; source ZIPs are handoffs, not native Framer projects.
