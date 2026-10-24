@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500&family=Geist:wght@400;500;600;700&display=swap");
+
+.adx-home {
+  --adx-navy: #081020;
+  --adx-orange: #e8621a;
+  --adx-blue: #1552c2;
+  --adx-purple: #7c3aed;
+  --adx-cream: #f2ece8;
+  --adx-paper: #fbfaf9;
+  --adx-ink: #222222;
+  font-family: "Geist", sans-serif;
+  color: var(--adx-ink);
+  background: var(--adx-paper);
+}
+.adx-home * { box-sizing: border-box; }
+.adx-home .adx-mono { font-family: "Chivo Mono", monospace; }
+.adx-home .adx-reveal { animation: adx-rise .75s cubic-bezier(.2,.75,.25,1) both; }
+.adx-home .adx-delay-1 { animation-delay: .12s; }
+.adx-home .adx-delay-2 { animation-delay: .24s; }
+@keyframes adx-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .adx-home *, .adx-home *::before, .adx-home *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
