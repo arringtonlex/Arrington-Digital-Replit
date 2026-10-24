@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Arrington Digital Website"
+description = "The public website for Arrington Digital, presenting technology, marketing, software products, industries and company information across the U.S. and Jamaica."
+version = "1.0.0"
+id = "artifacts/arrington-digital-website"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25275
+
+[services.development]
+run = "pnpm --filter @workspace/arrington-digital-website run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/arrington-digital-website", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/arrington-digital-website/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25275"
+BASE_PATH = "/"
