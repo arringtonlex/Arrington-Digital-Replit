@@ -105,7 +105,7 @@ function Header({ navigate, onSearch }: { navigate: (path: string) => void; onSe
       </div>
     </div>}
     {mobileOpen && <div className="absolute left-0 right-0 top-full max-h-[calc(100dvh-72px)] overflow-auto border-t border-[#081020]/10 bg-[#FBFAF9] px-5 pb-7 pt-4 shadow-xl xl:hidden">
-      <div className="mb-4 flex items-center justify-between gap-3 text-xs text-[#081020]/55"><span>Kingston · Pennsylvania<br /><span className="text-[10px] text-[#081020]/45">WhatsApp unavailable: [WHATSAPP NUMBER]</span></span><a href={CAL} target="_blank" rel="noreferrer" className="adx-action adx-action-primary min-h-10 px-3">Book a free call <ArrowUpRight size={13} /></a></div>
+      <div className="mb-4 flex items-center justify-between gap-3 text-xs text-[#081020]/55"><span>Jamaica · island-wide<br /><span className="text-[10px] text-[#081020]/45">WhatsApp unavailable: [WHATSAPP NUMBER]</span></span><a href={CAL} target="_blank" rel="noreferrer" className="adx-action adx-action-primary min-h-10 px-3">Book a free call <ArrowUpRight size={13} /></a></div>
       {menuGroups.map((label) => <div key={label} className="border-t border-[#081020]/10"><button onClick={() => setOpen(open === label ? "" : label)} className="flex min-h-[50px] w-full items-center justify-between text-left text-sm font-semibold" aria-expanded={open === label}>{label}<ChevronDown size={15} /></button>{open === label && <div className="grid grid-cols-1 gap-x-5 pb-3 sm:grid-cols-2">{(groupLists[label] || []).map((p) => <SiteLink key={p.path} to={p.path} onNavigate={go} className="flex min-h-11 items-center justify-between border-t border-[#081020]/[.07] py-2 text-sm">{p.title}<ArrowUpRight size={13} className="text-[#1552C2]" /></SiteLink>)}</div>}</div>)}
       <div className="grid grid-cols-2 gap-x-4 border-t border-[#081020]/10 py-3 text-sm"><SiteLink to="/our-work" onNavigate={go} className="flex min-h-11 items-center">Our Work</SiteLink><SiteLink to="/packages" onNavigate={go} className="flex min-h-11 items-center">Packages</SiteLink><SiteLink to="/tools" onNavigate={go} className="flex min-h-11 items-center">Tools</SiteLink><SiteLink to="/contact" onNavigate={go} className="flex min-h-11 items-center">Contact</SiteLink></div>
     </div>}
@@ -181,14 +181,17 @@ function CTA({ title = "Tell us what you’re building.", copy = "A new developm
 function HomePage({ navigate }: { navigate: (path: string) => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
-  const [reduced, setReduced] = useState(false);
+  const scenes = [
+    { time: 0, number: "01", title: "ADx in motion", source: "CURRENT ADx SITE VIDEO" },
+    { time: 3.2, number: "02", title: "Kingston hillside", source: "KINGSTON AERIAL · PEXELS" },
+    { time: 6.4, number: "03", title: "Kingston from above", source: "KINGSTON AERIAL · PEXELS" },
+  ];
+  const [activeScene, setActiveScene] = useState(1);
   useEffect(() => {
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduced(motion.matches);
-    update();
-    motion.addEventListener?.("change", update);
-    if (!motion.matches) { videoRef.current?.play().then(() => setPlaying(true)).catch(() => setPlaying(false)); }
-    return () => { motion.removeEventListener?.("change", update); };
+    const video = videoRef.current;
+    if (!video) return;
+    video.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    return () => video.pause();
   }, []);
   const toggleVideo = async () => {
     const video = videoRef.current;
@@ -196,28 +199,71 @@ function HomePage({ navigate }: { navigate: (path: string) => void }) {
     if (video.paused) { try { await video.play(); setPlaying(true); } catch { setPlaying(false); } }
     else { video.pause(); setPlaying(false); }
   };
+  const updateScene = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused && video.currentTime < 0.15) return;
+    if (video.currentTime >= 9.55) {
+      video.currentTime = 0;
+      setActiveScene(0);
+      return;
+    }
+    const next = video.currentTime < 3.2 ? 0 : video.currentTime < 6.4 ? 1 : 2;
+    if (next !== activeScene) setActiveScene(next);
+  };
+  const selectScene = async (index: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = scenes[index].time;
+    setActiveScene(index);
+    if (video.paused) { try { await video.play(); setPlaying(true); } catch { setPlaying(false); } }
+  };
   const stepsFor = steps;
   return <>
     <section id="home" className="px-3 pb-5 pt-3 sm:px-6 sm:pt-6">
-      <div className="relative mx-auto min-h-[650px] max-w-[1520px] overflow-hidden bg-[#081020] sm:min-h-[700px]">
-        <img src="/__mockup/images/jamaica-hospitality-hero.jpg" alt="" className={`absolute inset-0 h-full w-full object-cover object-[60%_center] transition-opacity duration-700 ${playing ? "opacity-0" : "opacity-100"}`} />
-        <video ref={videoRef} className={`adx-video transition-opacity duration-700 ${playing ? "opacity-100" : "opacity-0"}`} src="/__mockup/videos/adx-hero-reel.mp4" poster="/__mockup/images/jamaica-hospitality-hero.jpg" muted loop playsInline preload="metadata" aria-label="Muted visual reel of buildings and hospitality scenery" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,16,32,.92)_0%,rgba(8,16,32,.74)_47%,rgba(8,16,32,.12)_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,16,32,.48),transparent_44%,rgba(8,16,32,.12))]" />
-        <div className="relative flex min-h-[650px] flex-col justify-between px-6 py-7 text-white sm:min-h-[700px] sm:px-10 sm:py-10 lg:px-[8.5%]">
-          <div className="flex flex-wrap items-center justify-between gap-3"><Eyebrow light>TECHNOLOGY & MARKETING <span className="text-white/35">/</span> KINGSTON & PENNSYLVANIA</Eyebrow><span className="adx-mono hidden text-[9px] tracking-[.14em] text-white/60 sm:block">JAMAICA, BUILT FOR WHAT’S NEXT <span className="text-[#E8621A]">■</span></span></div>
-          <div className="max-w-[850px] pb-8 pt-16 sm:pb-10">
-            <p className="adx-mono mb-5 text-[10px] tracking-[.16em] text-white/70">ARRINGTON DIGITAL <span className="mx-2 text-[#E8621A]">/</span> YOUR ONE-TEAM PARTNER</p>
-            <h1 className="adx-reveal max-w-[850px] text-[clamp(3rem,8vw,7.3rem)] font-medium leading-[.94] tracking-[-.075em]">Build Smarter.<br />Market Better.<br /><span className="text-[#F2ECE8]">Scale Further.</span></h1>
-            <p className="adx-reveal adx-delay-1 mt-7 max-w-[620px] text-[15px] leading-[1.75] text-white/85 sm:text-[17px]">We build the technology and marketing behind Jamaica’s resorts, villas, restaurants and developments—from the wifi in the walls to the website, the brand, and the guests it brings in. One team, start to finish.</p>
-            <div className="adx-reveal adx-delay-2 mt-8 flex flex-col gap-3 min-[430px]:flex-row"><a href={CAL} target="_blank" rel="noreferrer" className="adx-action adx-action-primary min-h-[52px] px-6">Book a free call <ArrowUpRight size={15} /></a><a href="/what-we-do" onClick={(e) => { e.preventDefault(); navigate("/what-we-do"); }} className="adx-action adx-action-ghost min-h-[52px] px-6">See what we do <ArrowDown size={15} /></a></div>
-            <div className="mt-7 flex items-center gap-2 text-xs text-white/70"><MapPin size={14} className="text-[#E8621A]" /> Kingston, Jamaica <span className="text-white/30">·</span> Working island-wide</div>
+      <div className="mx-auto grid max-w-[1520px] overflow-hidden border border-[#081020]/15 bg-[#FBFAF9] lg:grid-cols-[.92fr_1.08fr]">
+        <div className="relative order-2 flex min-h-[510px] flex-col justify-between px-6 py-7 sm:px-10 sm:py-10 lg:order-1 lg:min-h-[690px] lg:px-12 lg:py-12">
+          <div className="flex items-center justify-between gap-4 border-b border-[#081020]/10 pb-4">
+            <Eyebrow>JAMAICA FIRST <span className="text-[#222]/35">/</span> TECHNOLOGY + MARKETING</Eyebrow>
+            <span className="adx-mono shrink-0 text-[9px] tracking-[.12em] text-[#081020]/45">01—04</span>
           </div>
-          <div className="flex items-end justify-between border-t border-white/25 pt-4"><span className="adx-mono text-[9px] tracking-[.15em] text-white/55">FROM THE WALLS TO THE BOOKINGS</span><button onClick={toggleVideo} aria-label={playing ? "Pause hero video" : "Play hero video"} aria-pressed={playing} className="inline-flex min-h-11 items-center gap-2 border border-white/40 px-3 text-[11px] text-white transition hover:bg-white/10">{playing ? <Pause size={14} /> : <Play size={14} />}{playing ? "Pause reel" : "Play reel"}</button></div>
+          <div className="py-10 lg:py-12">
+            <p className="adx-mono mb-5 text-[9px] tracking-[.16em] text-[#1552C2]">FOR THE PLACES JAMAICA RUNS ON</p>
+            <h1 className="adx-reveal max-w-[650px] text-[clamp(2.9rem,6vw,5.8rem)] font-medium leading-[.95] tracking-[-.075em] text-[#081020]">Build Smarter.<br />Market Better.<br /><span className="text-[#1552C2]">Scale Further.</span></h1>
+            <p className="adx-reveal adx-delay-1 mt-6 max-w-[500px] text-[15px] leading-7 text-[#081020]/72 sm:text-[16px]">Technology and marketing for Jamaica’s resorts, villas, restaurants and attractions. One local team connects the systems, story and demand behind every guest experience.</p>
+            <div className="adx-reveal adx-delay-2 mt-7 flex flex-col gap-3 min-[430px]:flex-row">
+              <a href={CAL} target="_blank" rel="noreferrer" className="adx-action adx-action-primary min-h-[50px] px-5">Book a free call <ArrowUpRight size={15} /></a>
+              <a href="/what-we-do" onClick={(e) => { e.preventDefault(); navigate("/what-we-do"); }} className="adx-action min-h-[50px] border border-[#081020]/25 px-5 text-[#081020] hover:border-[#1552C2] hover:text-[#1552C2]">Explore Jamaica services <ArrowRight size={15} /></a>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#081020]/15 pt-4">
+            <span className="adx-mono text-[9px] tracking-[.13em] text-[#081020]/55"><MapPin size={12} className="mr-2 inline text-[#E8621A]" />KINGSTON-BASED · JAMAICA-WIDE</span>
+            <span className="text-[11px] text-[#081020]/55">One team, start to finish.</span>
+          </div>
         </div>
-        <div className="absolute bottom-3 right-[150px] hidden max-w-[300px] text-right text-[9px] leading-4 text-white/55 md:block">{reduced ? "Poster shown; use Play reel to view the concept footage." : "Concept footage: current ADx site video + Pexels clips. Non-ADx property footage is illustrative stock."}</div>
+        <div className="relative order-1 min-h-[290px] overflow-hidden bg-[#081020] sm:min-h-[400px] lg:order-2 lg:min-h-[690px]">
+          <img src="/__mockup/images/arrington-digital-kingston-poster.jpg" alt="" className={`absolute inset-0 h-full w-full object-cover object-[60%_center] transition-opacity duration-700 ${playing ? "opacity-0" : "opacity-100"}`} />
+          <video ref={videoRef} className="adx-video" src="/__mockup/videos/adx-hero-reel.mp4" poster="/__mockup/images/arrington-digital-kingston-poster.jpg" muted autoPlay playsInline preload="auto" aria-label="Muted video montage of ADx technology footage and Kingston aerial views" onLoadedMetadata={() => { if (videoRef.current) videoRef.current.currentTime = 3.2; }} onCanPlay={() => { videoRef.current?.play().then(() => setPlaying(true)).catch(() => setPlaying(false)); }} onTimeUpdate={updateScene} onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,16,32,.35),transparent_35%,rgba(8,16,32,.9))]" />
+          <div className="absolute left-5 right-5 top-5 flex items-center justify-between gap-3 sm:left-7 sm:right-7 sm:top-7">
+            <span className="adx-mono text-[9px] tracking-[.15em] text-white/80">JAMAICA, IN MOTION <span className="ml-2 text-[#E8621A]">/</span> {scenes[activeScene].source}</span>
+            <button onClick={toggleVideo} aria-label={playing ? "Pause hero video" : "Play hero video"} aria-pressed={playing} className="inline-flex min-h-10 shrink-0 items-center gap-2 border border-white/45 bg-[#081020]/25 px-3 text-[10px] font-medium text-white backdrop-blur-sm transition hover:bg-white/10">{playing ? <Pause size={13} /> : <Play size={13} />}{playing ? "Pause" : "Play reel"}</button>
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 px-5 pb-5 pt-12 sm:px-7 sm:pb-7">
+            <div className="mb-4 flex items-end justify-between gap-4 text-white"><div><div className="adx-mono text-[9px] tracking-[.13em] text-white/55">ON THE GROUND</div><h2 className="mt-1 text-2xl font-medium tracking-[-.045em] sm:text-3xl">{scenes[activeScene].title}</h2></div><span className="adx-mono text-[10px] text-white/55">0{activeScene + 1} / 03</span></div>
+            <div className="grid grid-cols-3 border-t border-white/30">
+              {scenes.map((scene, index) => <button key={scene.number} type="button" onClick={() => void selectScene(index)} aria-current={activeScene === index ? "step" : undefined} className="group min-h-[57px] border-r border-white/20 px-2 pt-3 text-left last:border-r-0 sm:px-3">
+                <span className={`adx-mono block text-[9px] tracking-[.1em] ${activeScene === index ? "text-[#E8621A]" : "text-white/45"}`}>{scene.number} <span className="text-white/30">/</span> 03</span>
+                <span className="mt-1 block text-[10px] font-medium leading-4 text-white/80 transition group-hover:text-white sm:text-xs">{scene.title}</span>
+              </button>)}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="mx-auto flex max-w-[1520px] flex-wrap items-center justify-between gap-2 px-3 pt-2 text-[9px] leading-4 text-[#081020]/50 sm:px-6"><span>Concept footage combines the current ADx site video with Pexels clips; any non-ADx property footage is illustrative stock, not a client or property claim.</span><span className="shrink-0">12.8s · muted</span></div>
+      <div className="mx-auto flex max-w-[1520px] flex-wrap items-center justify-between gap-x-5 gap-y-1 px-3 pt-2 text-[9px] leading-4 text-[#081020]/50 sm:px-6">
+        <span>Concept reel: current ADx footage + Pexels Kingston aerials. Stock scenes are illustrative—not client property footage.</span>
+        <span className="shrink-0">Muted · 3-scene loop</span>
+      </div>
     </section>
 
     <section aria-label="Tools we work with" className="border-y border-[#081020]/10 bg-[#F2ECE8]"><div className="adx-container flex flex-col gap-4 py-5 sm:flex-row sm:items-center sm:justify-between"><div><div className="adx-mono text-[9px] tracking-[.15em] text-[#081020]/50">TOOLS WE BUILD ON</div><p className="mt-1 text-sm text-[#081020]/70">A connected toolkit, chosen for the job—not another stack to manage.</p></div><SiteLink to="/tools" onNavigate={navigate} className="adx-text-link">See every tool we use <ArrowUpRight size={14} /></SiteLink></div></section>
@@ -233,7 +279,7 @@ function HomePage({ navigate }: { navigate: (path: string) => void }) {
       <SiteLink to="/enterprise" onNavigate={navigate} className="group mt-5 flex min-h-[60px] flex-col justify-center gap-2 border-t border-[#081020]/15 pt-4 text-sm text-[#081020]/70 sm:flex-row sm:items-center sm:justify-between">Larger organisation? We also work with pharma, manufacturing, retail and education.<span className="font-semibold text-[#1552C2]">See enterprise cloud, security & data <ArrowRight className="ml-1 inline transition-transform group-hover:translate-x-1" size={14} /></span></SiteLink>
     </div></section>
 
-    <section className="bg-[#081020] py-16 text-white sm:py-24"><div className="adx-container grid gap-10 md:grid-cols-[.8fr_1.2fr] md:items-center"><div><Eyebrow light>WHY ONE TEAM</Eyebrow><h2 className="mt-5 max-w-[470px] text-4xl font-medium leading-[1.04] tracking-[-.055em] sm:text-5xl">One team.<br />One contract.<br /><span className="text-[#E8621A]">One number to call.</span></h2><p className="mt-6 max-w-[360px] text-sm leading-7 text-white/65">Good work happens when the people building your technology and your marketing talk to each other.</p></div><div className="grid sm:grid-cols-2">{[["01","One point of contact","No chasing the wifi company, web designer and marketing agency separately."],["02","Local team, international standards","Based in Kingston, delivering to the same standard as our U.S. clients."],["03","We stay after launch","Ongoing care for the things we build, not a goodbye at handover."],["04","You own what we build","Your website, your data and your accounts stay yours."]].map(([n,title,body])=><div key={n} className="border-t border-white/20 py-5 sm:px-5"><div className="adx-mono text-[10px] tracking-[.14em] text-[#E8621A]">{n}</div><h3 className="mt-3 text-lg font-medium">{title}</h3><p className="mt-2 max-w-[270px] text-sm leading-6 text-white/60">{body}</p></div>)}</div></div></section>
+      <section className="bg-[#081020] py-16 text-white sm:py-24"><div className="adx-container grid gap-10 md:grid-cols-[.8fr_1.2fr] md:items-center"><div><Eyebrow light>WHY ONE TEAM</Eyebrow><h2 className="mt-5 max-w-[470px] text-4xl font-medium leading-[1.04] tracking-[-.055em] sm:text-5xl">One team.<br />One contract.<br /><span className="text-[#E8621A]">One number to call.</span></h2><p className="mt-6 max-w-[360px] text-sm leading-7 text-white/65">Good work happens when the people building your technology and your marketing talk to each other.</p></div><div className="grid sm:grid-cols-2">{[["01","One point of contact","No chasing the wifi company, web designer and marketing agency separately."],["02","Local team, island-wide","Based in Kingston and working across Jamaica with local property teams."],["03","We stay after launch","Ongoing care for the things we build, not a goodbye at handover."],["04","You own what we build","Your website, your data and your accounts stay yours."]].map(([n,title,body])=><div key={n} className="border-t border-white/20 py-5 sm:px-5"><div className="adx-mono text-[10px] tracking-[.14em] text-[#E8621A]">{n}</div><h3 className="mt-3 text-lg font-medium">{title}</h3><p className="mt-2 max-w-[270px] text-sm leading-6 text-white/60">{body}</p></div>)}</div></div></section>
 
     <section className="adx-section adx-container"><div className="grid gap-9 md:grid-cols-[.8fr_1.2fr] md:items-center"><div><Eyebrow>MEET VICKI ANN <span className="text-[#222]/35">/</span> ALWAYS ON</Eyebrow><h2 className="adx-heading max-w-[480px]">The front desk that never clocks out.</h2><p className="adx-copy mt-5 max-w-[450px]">Vicki Ann answers your phone, texts and website chat around the clock—taking reservations, answering guest questions and handing over when someone needs a person.</p><div className="mt-7 flex flex-wrap gap-3"><button disabled title="Demo destination needed: [DEMO NUMBER / CHAT]" className="adx-action cursor-not-allowed bg-[#081020] px-5 text-white/75">Try Vicki Ann <span className="text-[9px] text-white/55">[DEMO NUMBER / CHAT]</span></button><SiteLink to="/vicki-ann" onNavigate={navigate} className="adx-text-link px-2">Learn more <ArrowUpRight size={14} /></SiteLink></div><p className="adx-mono mt-7 text-[9px] tracking-[.14em] text-[#081020]/45">MADE FOR HOSPITALITY, NOT ANOTHER INBOX</p></div>
       <div className="relative border border-[#081020]/10 bg-[#F2ECE8] p-5 sm:p-8"><div className="mx-auto max-w-[470px] border border-[#081020]/10 bg-[#FBFAF9] p-5 sm:p-7"><div className="flex items-center justify-between border-b border-[#081020]/10 pb-4"><div className="flex items-center gap-3"><div className="grid h-10 w-10 place-items-center bg-[#081020] text-white"><Sparkles size={16} /></div><div><div className="text-sm font-semibold">Vicki Ann</div><div className="text-[11px] text-[#081020]/55">Guest experience assistant</div></div></div><span className="flex items-center gap-2 text-[10px] text-[#245C37]"><span className="h-2 w-2 bg-[#4C9B60]" /> Illustrative</span></div><div className="mt-6 space-y-4 text-xs leading-5"><div className="max-w-[82%] border border-[#081020]/10 bg-[#F2ECE8] p-3.5">Good afternoon. How can I help with your stay?</div><div className="ml-auto max-w-[78%] bg-[#1552C2] p-3.5 text-white">Do you have a room with a sea view for Friday?</div><div className="max-w-[86%] border border-[#081020]/10 bg-[#F2ECE8] p-3.5">I can help with that. Let me check availability and connect you with the team.</div></div><div className="adx-mono mt-6 border-t border-[#081020]/10 pt-4 text-[9px] tracking-[.12em] text-[#081020]/45">ILLUSTRATIVE CONVERSATION</div></div><div className="mt-4 flex items-center gap-2 text-[10px] text-[#081020]/55"><CalendarDays size={13} className="text-[#E8621A]" /> Phone · text · web chat</div></div>
@@ -247,7 +293,7 @@ function HomePage({ navigate }: { navigate: (path: string) => void }) {
 
     <section className="adx-section adx-container grid gap-9 md:grid-cols-[.7fr_1.3fr] md:items-center"><div className="relative min-h-[340px] overflow-hidden bg-[#F2ECE8]"><img src="/__mockup/images/jamaica-hospitality-hero.jpg" alt="Hospitality property image used as illustrative concept imagery" loading="lazy" className="absolute inset-0 h-full w-full object-cover object-[65%_center]" /><div className="absolute inset-0 bg-gradient-to-t from-[#081020]/55 to-transparent" /><div className="absolute bottom-4 left-4 max-w-[220px] border-l-2 border-[#E8621A] bg-[#081020]/75 p-4 text-white"><div className="adx-mono text-[9px] tracking-[.14em] text-white/65">ROOTED HERE</div><p className="mt-2 text-sm font-medium">Building something to bring home.</p></div></div><div className="md:pl-8"><Eyebrow>A NOTE FROM OUR FOUNDER</Eyebrow><h2 className="adx-heading max-w-[650px]">Good technology should feel close to home.</h2><p className="adx-copy mt-6 max-w-[600px]">Jamaica is home. The people building its next chapter deserve technology and marketing partners who understand the place, the pace and the ambition. That’s why we’re building a team here—and creating room for young Jamaicans to do meaningful work.</p><p className="mt-6 text-sm font-semibold">Alexia Fulton <span className="ml-2 font-normal text-[#081020]/55">Founder, Arrington Digital</span></p><SiteLink to="/adx-jamaica" onNavigate={navigate} className="adx-text-link mt-4">Our story in Jamaica <ArrowRight size={14} /></SiteLink></div></section>
 
-    <section className="border-y border-[#081020]/10 bg-[#F2ECE8]/80"><div className="adx-container flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:justify-between"><div><Eyebrow>ALSO SERVING ENTERPRISE</Eyebrow><p className="mt-2 text-base font-medium">Cloud, security, data and software for complex organisations.</p><p className="mt-1 text-sm text-[#081020]/60">A dedicated route for pharma, manufacturing, retail and education teams.</p></div><SiteLink to="/enterprise" onNavigate={navigate} className="adx-text-link">Explore enterprise services <ArrowUpRight size={14} /></SiteLink></div></section>
+      <section className="border-y border-[#081020]/10 bg-[#F2ECE8]/80"><div className="adx-container flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:justify-between"><div><Eyebrow>ALSO FOR U.S. ENTERPRISE TEAMS</Eyebrow><p className="mt-2 text-base font-medium">A wider industry view, one click deeper.</p><p className="mt-1 text-sm text-[#081020]/60">Cloud, security, data and software for pharma, manufacturing, retail and education.</p></div><SiteLink to="/enterprise" onNavigate={navigate} className="adx-text-link">Explore enterprise services <ArrowUpRight size={14} /></SiteLink></div></section>
     <CTA />
   </>;
 }
@@ -258,7 +304,7 @@ function InteriorPage({ page, navigate }: { page: Page; navigate: (path: string)
   const Icon = icon;
   const related = pages.filter((p) => p.group === page.group && p.path !== page.path && p.path !== "/our-work/client-slug").slice(0, 4);
   return <>
-    <section className="relative overflow-hidden bg-[#081020] px-5 py-16 text-white sm:py-24"><div className="absolute inset-y-0 right-0 hidden w-[43%] border-l border-white/10 lg:block"><div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(21,82,194,.28),transparent_55%,rgba(232,98,26,.12))]" /><div className="absolute bottom-8 right-8 text-right"><div className="adx-mono text-[9px] tracking-[.15em] text-white/45">ARRINGTON DIGITAL</div><div className="mt-2 text-xs text-white/55">KINGSTON · PENNSYLVANIA</div></div></div>
+    <section className="relative overflow-hidden bg-[#081020] px-5 py-16 text-white sm:py-24"><div className="absolute inset-y-0 right-0 hidden w-[43%] border-l border-white/10 lg:block"><div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(21,82,194,.28),transparent_55%,rgba(232,98,26,.12))]" /><div className="absolute bottom-8 right-8 text-right"><div className="adx-mono text-[9px] tracking-[.15em] text-white/45">ARRINGTON DIGITAL</div><div className="mt-2 text-xs text-white/55">JAMAICA · ISLAND-WIDE</div></div></div>
       <div className="adx-container relative"><nav aria-label="Breadcrumb" className="mb-10 flex flex-wrap items-center gap-2 text-[11px] text-white/55"><a href="/" onClick={(e) => {e.preventDefault();navigate("/")}}>Home</a><span>/</span><span className="text-white/85">{page.title}</span></nav><div className="max-w-[760px]"><Eyebrow light>{page.group.toUpperCase()} <span className="text-white/35">/</span> ARRINGTON DIGITAL</Eyebrow><div className="mt-8 flex items-center gap-4"><span className="grid h-12 w-12 place-items-center border border-white/25 text-[#E8621A]"><Icon size={20} /></span><span className="adx-mono text-[9px] tracking-[.14em] text-white/45">KINGSTON & PENNSYLVANIA</span></div><h1 className="mt-6 text-[clamp(2.7rem,7vw,5.6rem)] font-medium leading-[.96] tracking-[-.07em]">{page.intro || page.title}</h1>{page.intro && page.title !== page.intro && <p className="mt-4 text-xl text-white/80">{page.title}</p>}<p className="mt-6 max-w-[650px] text-[15px] leading-7 text-white/75">{page.description}</p><div className="mt-8 flex flex-wrap gap-3"><a href={CAL} target="_blank" rel="noreferrer" className="adx-action adx-action-primary">Book a free call <ArrowUpRight size={15} /></a><a href="#details" className="adx-action adx-action-ghost">Explore this page <ArrowDown size={15} /></a></div></div></div></section>
     <section id="details" className="adx-section adx-container"><div className="grid gap-9 md:grid-cols-[.8fr_1.2fr]"><div><Eyebrow>{page.group.toUpperCase()} <span className="text-[#222]/35">/</span> THE DETAILS</Eyebrow><h2 className="adx-heading max-w-[500px]">{is404 ? "Find your next step." : page.path === "/our-work" ? "Proof comes after permission." : "A clearer way forward."}</h2><p className="adx-copy mt-5 max-w-[410px]">{page.path === "/our-work" ? "Case studies stay hidden until the client, details and permission are confirmed. No results or client names are invented here." : page.path === "/contact" ? "No contact form. Choose a direct route to the team and keep your details with you." : "The work starts with the place, the people and what needs to happen next."}</p>{page.path === "/contact" && <div className="mt-7 flex flex-col items-start gap-2"><a className="adx-text-link" href={CAL} target="_blank" rel="noreferrer">Book a free call <ArrowUpRight size={14} /></a><a className="adx-text-link" href={`mailto:${EMAIL}`}><Mail size={14} />{EMAIL}</a></div>}</div><div className="border-t border-[#081020]/15">{(page.points || []).map((point, index) => <div key={point} className="grid grid-cols-[44px_1fr] gap-4 border-b border-[#081020]/15 py-5"><span className="adx-mono pt-1 text-[10px] tracking-[.1em] text-[#E8621A]">0{index + 1}</span><p className="max-w-[660px] text-sm leading-6 text-[#081020]/75">{point}</p></div>)}</div></div></section>
     {related.length > 0 && <section className="bg-[#F2ECE8] py-14"><div className="adx-container"><Eyebrow>KEEP EXPLORING <span className="text-[#222]/35">/</span> {page.group.toUpperCase()}</Eyebrow><div className="mt-7 grid gap-x-6 sm:grid-cols-2 lg:grid-cols-4">{related.map((r) => <SiteLink key={r.path} to={r.path} onNavigate={navigate} className="adx-page-card"><span className="adx-mono text-[9px] tracking-[.12em] text-[#E8621A]">{r.group.toUpperCase()}</span><span><span className="block text-lg font-medium tracking-[-.03em]">{r.title}</span><span className="mt-2 block text-xs leading-5 text-[#081020]/60">{r.description}</span></span><span className="mt-3 flex items-center gap-2 text-xs font-semibold text-[#1552C2]">Explore <ArrowRight size={13} /></span></SiteLink>)}</div></div></section>}
