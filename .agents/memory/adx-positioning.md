@@ -20,3 +20,9 @@ Keep employee quotes and portraits from the live site. Do not display pricing or
 **Why:** the user clarified which proof, imagery, industries, and navigation structure should be preserved or excluded.
 
 **How to apply:** keep these content and navigation rules consistent across the Arrington Digital homepage, menus, and landing pages.
+
+Do not create a standalone “Who We Help” umbrella page or a separate “Start a Conversation” landing page; keep industry pages accessible from the menu and use Contact for inquiries. Base Careers and legal pages on the live-site content. Use relevant HD or 4K royalty-free photography on each landing page without visible source credits.
+
+**Why:** the user asked for fewer unnecessary landing pages, continuity with current Careers and legal content, and stronger image quality.
+
+**How to apply:** use Contact as the inquiry destination, preserve useful audience-specific routes, and choose relevant high-resolution licensed imagery for new landing pages.

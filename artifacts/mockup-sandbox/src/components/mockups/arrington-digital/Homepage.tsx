@@ -10,6 +10,13 @@ import "./_group.css";
 const CAL = "https://cal.com/arringtondx-info/introduction-call";
 const EMAIL = "info@arringtondx.com";
 type Page = { title: string; path: string; group: string; description: string; intro?: string; points?: string[] };
+const legacyPaths: Record<string, string> = {
+  "/legal/privacy": "/legal/privacy-policy",
+  "/legal/terms": "/legal/terms-of-service",
+  "/start-a-conversation": "/contact",
+  "/who-we-help": "/404",
+};
+const resolveLegacyPath = (path: string) => legacyPaths[path] || path;
 
 const industryDirectory = [
   { number: "01", title: "Pharmaceutical & Life Sciences", path: "/industries/pharmaceutical-life-sciences", blurb: "Bring secure systems, launch workstreams and critical decisions into one clearer operating view." },
@@ -34,7 +41,6 @@ const pages: Page[] = [
   { title: "Social Media & Content", path: "/social-media", group: "Grow", description: "A reliable content system that gives each channel a reason to exist and each campaign a clear audience.", points: ["Content pillars and channel planning", "Campaign concepts, photography and short-form video", "Publishing, community response and approvals", "Creative testing and performance reviews"] },
   { title: "Email Marketing & CRM", path: "/email-marketing", group: "Grow", description: "Turn first enquiries into well-timed, personal follow-up across buyer, guest and customer journeys.", points: ["CRM setup, fields, permissions and segmentation", "Lead qualification, assignment and follow-up", "Pre-arrival, post-visit and re-engagement journeys", "Campaign reporting tied to meaningful actions"] },
   { title: "Ads & Search", path: "/digital-marketing", group: "Grow", description: "Search, paid media and conversion work built around the people you need to reach and the action you want next.", points: ["Paid search and social campaign planning", "SEO, answer-engine optimization and local visibility", "Direct-booking and lead-generation campaigns", "Landing pages, conversion tracking and reporting"] },
-  { title: "Who We Help", path: "/who-we-help", group: "Audiences", description: "Organizations, industries and property teams across the U.S. and Jamaica.", points: industryDirectory.map((item) => `${item.title} — ${item.blurb}`) },
   { title: "Arrington Digital, LLC - USA", path: "/adx-usa", group: "Company", description: "A U.S. home for connected technology and marketing, with a Pennsylvania presence and teams working across both markets.", intro: "Technology and growth, connected for U.S. organizations.", points: ["Pennsylvania, USA", "Pharmaceutical & Life Sciences, Manufacturing, Retail & CPG and Education", "Cloud, security, data, software and digital experience"] },
   { title: "Arrington Digital Limited - Jamaica", path: "/adx-jamaica", group: "Company", description: "The Jamaica-specific home for Arrington Digital Limited’s services, locations, industries and local context.", points: ["Kingston, Montego Bay, Ocho Rios, Negril, Mandeville and island-wide coverage", "Hospitality & Tourism, Financial Services and Government Modernization", "Local technology, security, data and marketing services"] },
   { title: "Pharmaceutical & Life Sciences", path: "/industries/pharmaceutical-life-sciences", group: "Industries", description: "Secure digital foundations and decision support for complex pharmaceutical and life sciences work.", points: ["Cloud infrastructure and security foundations", "Launch readiness, workstream dependencies and risk visibility", "Data platforms and applied AI with human decision-making in view", "Digital experiences and marketing operations"] },
@@ -47,17 +53,16 @@ const pages: Page[] = [
   { title: "Restaurants & Bars", path: "/who-we-help/restaurants-bars", group: "Audiences", description: "Support the pace of service with the operating tools, digital presence and follow-up that fit a hospitality team.", points: ["Menus, hours, events and reservation-ready websites", "Social campaigns and local search visibility", "ADX Surge for scheduling, payroll and team operations", "Guest Wi-Fi and connected property infrastructure"] },
   { title: "Attractions & Excursions", path: "/who-we-help/attractions-excursions", group: "Audiences", description: "Move visitors from discovery to confirmed experience while giving staff a clearer view of each day’s operation.", points: ["Mobile-first tour pages, availability and booking enquiries", "Online payment flows and clear trip information", "Guest CRM, confirmations and useful follow-up", "Staff scheduling and operational tools"] },
   { title: "Enterprise: Cloud, Security & Data", path: "/enterprise", group: "Enterprise", description: "Cloud, security, data, AI and software services for complex organizations across industries in the U.S. and Jamaica.", points: ["Cloud strategy, infrastructure and modernization", "Cybersecurity, identity and compliance support", "Data platforms, analytics and applied AI", "Product engineering and enterprise integrations", "SOC 2, HIPAA, GDPR, FDIC and FedRAMP are addressed only in this enterprise context."] },
-  { title: "Start a Conversation", path: "/start-a-conversation", group: "Start here", description: "Tell us what you are building, improving or trying to connect. The team will help clarify a practical next step.", points: ["Schedule an introduction call.", `Email ${EMAIL}.`, "Share the market, team and goals involved."] },
   { title: "Our Work", path: "/our-work", group: "Company", description: "Case studies will be shared here once client permission and approved project details are available.", points: ["No case studies are published in this concept until approved."] },
   { title: "Case study template", path: "/our-work/client-slug", group: "Company", description: "A case-study structure reserved for future approved project details.", points: ["Client, location and project details are not published.", "This template is intentionally hidden from proof claims until approved."] },
   { title: "Tools We Work With", path: "/tools", group: "Company", description: "A connected toolkit, chosen for the job—not another stack to manage.", points: ["Framer", "HubSpot", "Salesforce", "AWS", "Microsoft Azure", "Google Cloud", "Snowflake", "Databricks"] },
   { title: "How We Work", path: "/how-we-work", group: "Company", description: "Clear steps from the first conversation to handover and ongoing care.", points: ["Understand the property and the people using it.", "Map the right scope and agree next steps.", "Build alongside your team and contractors.", "Test, hand over and continue to support what we build."] },
   { title: "About", path: "/about", group: "Company", description: "Meet the team behind ADX and the people bringing technology and marketing together.", points: ["One team to call across the work.", "Technology and marketing that connect.", "No unverified metrics or partner claims are included in this concept."] },
-  { title: "Careers", path: "/careers", group: "Company", description: "A remote-first team across the U.S. and Jamaica, bringing technology, operations and digital growth together.", points: ["Autonomy, flexibility and clear ownership across the work.", "Room to learn, contribute and grow across disciplines.", "When roles open, we share them here. To be considered for future work, email info@arringtondx.com."] },
-  { title: "Privacy", path: "/legal/privacy", group: "Legal", description: "A place for clear information about how Arrington Digital handles personal data.", points: ["Privacy notice content is in review before publication.", "The final notice should explain collection, use, retention and individual choices.", "Arrington Digital serves organizations in the U.S. and Jamaica."] },
-  { title: "Terms", path: "/legal/terms", group: "Legal", description: "A place for the terms that support a clear working relationship with Arrington Digital.", points: ["Terms content is in review before publication.", "Final terms should clarify service engagement, account responsibilities and acceptable use.", "Arrington Digital serves organizations in the U.S. and Jamaica."] },
+  { title: "Careers", path: "/careers", group: "Company", description: "Technology is moving fast, as are the expectations of the enterprises that depend on it. We build and manage the infrastructure, security, data and marketing systems that drive real business outcomes. To do it, we need people who are sharp, accountable and ready to do serious work.", intro: "Build something that actually matters.", points: ["Remote-first work built on autonomy, trust and performance.", "When a role opens, it is because the work demands it.", `Send your résumé to ${EMAIL}; strong candidates stay on file.`] },
+  { title: "Privacy Policy", path: "/legal/privacy-policy", group: "Legal", description: "How Arrington Digital handles personal information across its website, software, services and communications." },
+  { title: "Terms of Service", path: "/legal/terms-of-service", group: "Legal", description: "The business terms that apply when you use Arrington Digital’s website, software or services." },
   { title: "Insights", path: "/insights", group: "Company", description: "Ideas on hospitality, property technology and marketing from the ADX team.", points: ["Articles will appear here as they are published.", "No placeholder statistics or client claims are included."] },
-  { title: "404", path: "/404", group: "Help", description: "That page could not be found. Explore the services, audiences and tools available across the site.", points: ["Go to What We Do", "Browse Who We Help", "Search the site"] },
+  { title: "404", path: "/404", group: "Help", description: "That page could not be found. Explore the services, industries and tools available across the site.", points: ["Go to What We Do", "Browse industries", "Search the site"] },
 ];
 
 const RESORT_VIDEO = "https://videos.pexels.com/video-files/33246936/14164738_1920_1080_30fps.mp4";
@@ -65,17 +70,31 @@ const RESTAURANT_VIDEO = "https://videos.pexels.com/video-files/19905887/1990588
 const JAMAICA_VIDEO = "https://videos.pexels.com/video-files/37177254/15748984_2560_1440_24fps.mp4";
 type HeroScene = { number: string; title: string; tag: string; segment?: number; src?: string; poster?: string };
 const pageVisuals: Record<string, { src: string; alt: string; label: string }> = {
-  "/what-we-do": { src: "/__mockup/images/arrington-digital-team-collaboration.jpg", alt: "A cross-functional team working together around a planning table", label: "CONNECTED CAPABILITIES" },
-  "/enterprise": { src: "/__mockup/images/arrington-digital-data-center.jpg", alt: "Rows of connected data center infrastructure", label: "CLOUD + SECURITY" },
-  "/custom-software": { src: "/__mockup/images/arrington-digital-marketing.jpg", alt: "A laptop displaying an analytics dashboard", label: "PRODUCT + SOFTWARE" },
-  "/social-media": { src: "/__mockup/images/arrington-digital-retail.jpg", alt: "A contemporary retail environment", label: "CONTENT + CAMPAIGN" },
+  "/what-we-do": { src: "/__mockup/images/arrington-digital-what-we-do.jpg", alt: "Colleagues reviewing a project together around a table", label: "CONNECTED CAPABILITIES" },
+  "/enterprise": { src: "/__mockup/images/arrington-digital-enterprise-cloud.jpg", alt: "Illuminated server infrastructure in a modern data center", label: "CLOUD + SECURITY" },
+  "/adx-propertyengineering": { src: "/__mockup/images/arrington-digital-property-engineering.jpg", alt: "A network engineer working with structured cabling and infrastructure", label: "PROPERTY NETWORKS" },
+  "/custom-software": { src: "/__mockup/images/arrington-digital-software-dev.jpg", alt: "Software developers collaborating at a laptop", label: "PRODUCT + SOFTWARE" },
+  "/websites": { src: "/__mockup/images/arrington-digital-website-design.jpg", alt: "A laptop displaying a digital experience in a modern workspace", label: "WEB + DIGITAL EXPERIENCE" },
+  "/brand-identity": { src: "/__mockup/images/arrington-digital-brand-design.jpg", alt: "A designer building a visual identity at a studio desk", label: "BRAND SYSTEMS" },
+  "/social-media": { src: "/__mockup/images/arrington-digital-social-creator.jpg", alt: "A content creator recording a short-form video on a phone", label: "CONTENT + CAMPAIGN" },
+  "/email-marketing": { src: "/__mockup/images/arrington-digital-email-analytics.jpg", alt: "A marketing analytics dashboard open on a laptop", label: "CRM + LIFECYCLE" },
+  "/digital-marketing": { src: "/__mockup/images/arrington-digital-marketing-team.jpg", alt: "A marketing team planning a campaign with charts and laptops", label: "SEARCH + CAMPAIGN" },
   "/industries/pharmaceutical-life-sciences": { src: "/__mockup/images/arrington-digital-industry-pharma.jpg", alt: "A life sciences researcher working in a precise laboratory", label: "LIFE SCIENCES" },
   "/industries/manufacturing": { src: "/__mockup/images/arrington-digital-industry-manufacturing.jpg", alt: "A production operator working beside industrial equipment", label: "MANUFACTURING" },
   "/industries/hospitality-tourism": { src: "/__mockup/images/arrington-digital-industry-hospitality.jpg", alt: "A hospitality team preparing a thoughtful guest experience", label: "HOSPITALITY + TOURISM" },
   "/industries/retail-cpg": { src: "/__mockup/images/arrington-digital-industry-retail.jpg", alt: "Product shelves and customer experiences in a retail setting", label: "RETAIL + CPG" },
-  "/who-we-help/resorts-hotels-villas-real-estate": { src: "/__mockup/images/arrington-digital-resort.jpg", alt: "A seaside villa with a pool and landscaped grounds", label: "PROPERTY + GUEST EXPERIENCE" },
-  "/who-we-help/restaurants-bars": { src: "/__mockup/images/arrington-digital-restaurant-operations.png", alt: "A restaurant team member checking a tablet at the service pass", label: "RESTAURANTS + BARS" },
-  "/who-we-help/attractions-excursions": { src: "/__mockup/images/arrington-digital-tour.jpg", alt: "Visitors enjoying a guided excursion", label: "ATTRACTIONS + EXCURSIONS" },
+  "/industries/education": { src: "/__mockup/images/arrington-digital-education-campus.jpg", alt: "Students collaborating on a university campus", label: "EDUCATION" },
+  "/who-we-help/resorts-hotels-villas-real-estate": { src: "/__mockup/images/arrington-digital-pool-villa.jpg", alt: "A contemporary villa overlooking the coast with an infinity pool", label: "PROPERTY + GUEST EXPERIENCE" },
+  "/who-we-help/restaurants-bars": { src: "/__mockup/images/arrington-digital-restaurant-service.jpg", alt: "A restaurant team serving a customer at the counter", label: "RESTAURANTS + BARS" },
+  "/who-we-help/attractions-excursions": { src: "/__mockup/images/arrington-digital-excursion-boat.jpg", alt: "Visitors setting out on a guided boat excursion", label: "ATTRACTIONS + EXCURSIONS" },
+  "/our-work": { src: "/__mockup/images/arrington-digital-contact-team.jpg", alt: "Business partners reviewing a project together", label: "WORK IN PRACTICE" },
+  "/tools": { src: "/__mockup/images/arrington-digital-tools-stack.jpg", alt: "Network infrastructure and technical equipment", label: "TOOLS + SYSTEMS" },
+  "/how-we-work": { src: "/__mockup/images/arrington-digital-process-meeting.jpg", alt: "A team mapping a project plan in a working session", label: "HOW WE WORK" },
+  "/careers": { src: "/__mockup/images/arrington-digital-team-collaboration.jpg", alt: "The Arrington Digital team working together", label: "JOIN THE TEAM" },
+  "/insights": { src: "/__mockup/images/arrington-digital-insights-report.jpg", alt: "A professional reviewing a business report on a laptop", label: "IDEAS + PRACTICE" },
+  "/contact": { src: "/__mockup/images/arrington-digital-careers-team.jpg", alt: "Arrington Digital colleagues collaborating around a table", label: "TALK WITH ADX" },
+  "/legal/privacy-policy": { src: "/__mockup/images/arrington-digital-privacy-security.jpg", alt: "A laptop in a secure modern workspace", label: "PRIVACY + TRUST" },
+  "/legal/terms-of-service": { src: "/__mockup/images/arrington-digital-terms-contract.jpg", alt: "A business professional reviewing an agreement", label: "TERMS OF SERVICE" },
 };
 const jamaicaPhotoStories = [
   { number: "01", title: "Resorts, Hotels, Villas & Real Estate", tag: "PROPERTY + GUEST EXPERIENCE", path: "/who-we-help/resorts-hotels-villas-real-estate", src: "/__mockup/images/jamaica-villa.jpg", alt: "A Jamaican villa framed by tropical landscaping", blurb: "Connect property discovery, guest communication and on-site operations." },
@@ -106,6 +125,204 @@ const employeeStories = [
   },
 ];
 
+type LegalSection = { title: string; body: string[] };
+
+const privacyPolicySections: LegalSection[] = [
+  {
+    title: "Who we are and what this policy covers",
+    body: [
+      "Arrington Digital protects the personal information it handles and never sells it. This Privacy Policy explains what we collect, why we collect it, who we share it with and the choices you have.",
+      "“Arrington Digital,” “ADx,” “we,” “us” and “our” mean B.Arren, LLC. DBA/ Arrington Digital, headquartered in Pennsylvania, USA, and its affiliate Arrington Digital Ltd., 60 Knutsford Boulevard, Kingston, Jamaica.",
+      "This policy applies to arringtondx.com; our software, including Surge (with the Vicki Ann AI agent), LaunchIQ and other applications, APIs and AI agents; our cloud, data, AI, cybersecurity, marketing, managed services and property network engineering; and communications by email, phone, SMS, web chat, WhatsApp and social media.",
+      "When you visit our website, contact us or apply for a job, we are the controller of your information. When a business customer uses our Platform or services to process data about its own employees, applicants, guests or customers, that customer is the controller and we act as its processor or service provider under its documented instructions. If you are connected to a client, contact that business first to exercise your rights.",
+    ],
+  },
+  {
+    title: "Information we collect",
+    body: [
+      "We collect only what we need to run the website, deliver the Platform and services, and meet legal obligations.",
+      "Contact and business details: name, job title, company, email, phone, country and messages you send when booking a call or contacting us.",
+      "Account and user data: login email, username, role, permissions, SSO identifiers, MFA settings and preferences. Customer content: files, records, prompts, chat transcripts, reservations, schedules and project data uploaded or generated in the Platform.",
+      "Workforce data in Surge may include employee and applicant names, contact details, TRN, NIS, SSN or other tax IDs, pay rates, hours, timesheets, bank details for payroll, benefits elections, résumés and onboarding documents. Our business customer provides this data and we process it as its processor.",
+      "Location data may include geo-fenced clock-in location when an employer enables it, and approximate location from IP address. Communications data may include phone numbers, WhatsApp or social profile names and IDs, message content, call recordings and transcripts, and delivery or read status.",
+      "Billing data includes billing contacts, invoices and payment history. Card details are handled by our payment processor; we do not store full card numbers. Technical and usage data includes IP address, browser, device, operating system, pages visited, referring URL, feature usage, error logs and security logs. Job applicant data may include CVs, work history, references and interview notes.",
+      "Some Platform features may process sensitive data, such as government ID numbers, bank details or, for certain clients, health-related information. We process it only as our customer instructs and as the law allows, with added safeguards. Please do not send sensitive information through the website or general messaging channels unless we ask for it.",
+    ],
+  },
+  {
+    title: "How we use information",
+    body: [
+      "We use personal information to provide, host, configure and support the Platform and services; run payroll, scheduling, hiring, reservations and other customer-enabled features; respond to enquiries and book demos; operate AI features; secure systems, detect fraud and keep audit logs; analyse usage to fix bugs and improve features; send marketing with the required consent or lawful basis; bill customers and keep financial records; comply with law; and assess job applicants.",
+      "Where GDPR, UK GDPR or Jamaica’s Data Protection Act applies, our legal basis may be contract performance, our customer’s instructions, legitimate interests, consent or legal obligation, depending on the purpose.",
+      "We do not sell personal information, share it for cross-context behavioural advertising, or use customer content or workforce data for our own marketing.",
+    ],
+  },
+  {
+    title: "Artificial intelligence and large language models",
+    body: [
+      "Our software uses AI, including large language models, and we tell you when you are talking to an AI agent rather than a person. Examples include Vicki Ann answering calls, texts, web chat and WhatsApp; AI-ranked job candidates in Surge; readiness scoring and insights in LaunchIQ; and content, campaign, search, summarisation and custom AI features.",
+      "We build our own software and may combine our models with providers of hosted LLMs on AWS, Google Cloud or Microsoft Azure, or direct model APIs. Relevant inputs, such as a guest message or prompt, are sent to the model provider to generate a response. Current AI sub-processors are available on request and in our DPA.",
+      "We do not use customer content, workforce data or end-user conversations to train general-purpose AI models. We choose providers that contractually agree not to train on data we send them. We fine-tune on customer data only when that customer asks us in writing, and that model is used only for that customer.",
+      "AI agents hand conversations to a person when a guest asks or the agent cannot help. Candidate rankings and scores assist human judgment; our customers—not AI—make hiring, pay and employment decisions. AI output can be incomplete or wrong; check it before relying on it for legal, medical, financial or safety decisions.",
+      "AI agent conversations and calls may be recorded, transcribed and stored so a business can review them, resolve disputes and improve service. Where notice or consent is required, we or our customer provide it at the start of the call or chat.",
+    ],
+  },
+  {
+    title: "WhatsApp, Meta and other messaging and social platforms",
+    body: [
+      "When you message us or a customer through WhatsApp, Facebook Messenger, Instagram or another social platform, that platform and our software both process your messages. We connect to the WhatsApp Business Platform (Cloud API) and other Meta and social APIs on behalf of ourselves or business customers.",
+      "We may receive your phone number, profile name, platform user ID, message content (including text, images, voice notes, documents or location you choose to share), timestamps, and delivery or read status. We use it to reply, complete what you asked, keep a business conversation history and meet platform requirements—not for unrelated purposes, sale or data brokerage.",
+      "Business-initiated WhatsApp messages, such as confirmations, reminders or offers, are sent only to people who have opted in. Reply STOP or tell the agent you want to stop to end non-essential messages.",
+      "Meta and other platforms process your data under their own terms and policies, including WhatsApp’s Privacy Policy and Meta’s Privacy Policy. We do not control their practices. We follow applicable business messaging, platform and developer terms, and delete platform data when it is no longer needed, when a user asks or when the platform requires it.",
+      "To request deletion of platform data, email privacy@arringtondx.com with the phone number or account you used. We will delete associated messages and data within 30 days unless the law requires retention or a business customer controls the data; in that case, we will forward your request.",
+    ],
+  },
+  {
+    title: "Third-party integrations and sub-processors",
+    body: [
+      "We share personal information with vetted service providers under contracts that limit use to our instructions. Providers may include AWS, Google Cloud and Microsoft Azure for hosting; Snowflake, Databricks and Google BigQuery for data platforms; hosted model services and model APIs for AI; WhatsApp Business Platform, SMS and voice carriers and email providers for messaging; Salesforce, including Marketing Cloud and Agentforce, for CRM and marketing; Noyo, QuickBooks Online, Sage Intacct, Unanet, banks and payment processors for benefits, finance and payments; Cal.com and Framer for scheduling and our website; and logging, error-tracking and support tools for security and support.",
+      "When you or your organization connect another app—such as payroll, accounting, CRM, calendar or social account—data flows as configured. The other service’s own terms and privacy policy govern its handling, and we are not responsible for its practices.",
+      "We may also share information with affiliates, professional advisers, a buyer or successor in a merger or asset sale, and courts, regulators or law enforcement when the law requires it or to protect rights, safety or property. Customers may request a current sub-processor list in our DPA.",
+    ],
+  },
+  {
+    title: "International transfers, retention and security",
+    body: [
+      "We operate in the United States, Jamaica, the Caribbean, Latin America and Europe. Providers may process data in other countries. For transfers from the EU, UK, Jamaica or another region with transfer rules, we use safeguards such as the European Commission’s Standard Contractual Clauses, the UK International Data Transfer Addendum or another legally recognised mechanism.",
+      "We keep information only as long as needed: website enquiries and sales contacts up to 3 years after our last interaction; customer content and workforce data for the contract term, then deleted or returned within 90 days unless instructed otherwise or law requires more; payroll, tax and financial records as employment and tax laws require (often 6–7 years); AI agent conversations and call recordings as configured by the customer or 12 months by default; security and audit logs up to 2 years; and our job applicant data up to 2 years after the hiring decision unless you ask us to delete it sooner.",
+      "Safeguards include AES-256 encryption at rest, TLS encryption in transit, role-based access control, SSO and MFA, tamper-evident audit logs, network monitoring, vulnerability management and staff confidentiality obligations. No system is completely secure. We notify affected people, customers and regulators about a breach as the law requires.",
+    ],
+  },
+  {
+    title: "Your rights and choices",
+    body: [
+      "Depending on where you live, you may have the right to access, correct, delete or port personal information, and to object to or restrict how it is used. These rights may arise under Jamaica’s Data Protection Act, 2020; EU and UK GDPR; the California Consumer Privacy Act as amended by the CPRA; and other US state privacy laws.",
+      "Email privacy@arringtondx.com to make a request. We verify identity and respond within the time required by law, usually 30–45 days. You may withdraw consent without affecting earlier processing, opt out of marketing using an unsubscribe link, replying STOP or emailing us, and appeal our response or complain to your local data protection authority.",
+      "We will not treat you differently for exercising your rights. If we process information for a business customer, we will pass your request to that customer and assist it in responding.",
+    ],
+  },
+  {
+    title: "Cookies and similar technologies",
+    body: [
+      "Our website uses cookies and similar technologies to make the site work, remember preferences and understand how visitors use it. Where required, we ask for consent before setting non-essential cookies. You can change your choices in our cookie banner or block cookies in your browser; some features may then not work. We honour Global Privacy Control signals where the law requires.",
+    ],
+  },
+  {
+    title: "Children",
+    body: [
+      "Our website and Platform are intended for businesses and are not directed to children under 16. We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, contact us and we will delete it.",
+    ],
+  },
+  {
+    title: "Changes to this policy",
+    body: [
+      "We may update this policy as our services, technology or the law change. We will post the new version here with a new effective date and, for material changes, notify customers by email or in the Platform before the changes take effect.",
+    ],
+  },
+  {
+    title: "Contact us",
+    body: [
+      "B.Arren, LLC. DBA/ Arrington Digital, Pennsylvania, USA, and Arrington Digital Ltd., 60 Knutsford Boulevard, Kingston, Jamaica.",
+      "Privacy questions and requests: privacy@arringtondx.com. General enquiries: info@arringtondx.com.",
+    ],
+  },
+];
+
+const termsOfServiceSections: LegalSection[] = [
+  {
+    title: "Acceptance and who we are",
+    body: [
+      "By using arringtondx.com, our software or our services, you agree to these Terms. If you use them for an organization, you confirm you have authority to bind it; “you” then means that organization.",
+      "These Terms are between you and B.Arren, LLC. DBA/ Arrington Digital (Pennsylvania, USA) or, where your order names it, Arrington Digital Ltd. (Kingston, Jamaica). They cover our website; our software, including Surge with Vicki Ann, LaunchIQ and other applications, APIs and AI agents (the Platform); and our professional and managed services (the Services).",
+      "Most engagements are governed by a signed MSA, SOW, order form or DPA. If one conflicts with these Terms, the signed agreement controls. Our Privacy Policy explains how we handle personal information. The Platform and Services are for business use; you must be at least 18 and able to enter a binding contract.",
+    ],
+  },
+  {
+    title: "Accounts, acceptable use and your responsibilities",
+    body: [
+      "Keep login details confidential, use MFA where available, and tell security@arringtondx.com promptly if you suspect unauthorised access. You are responsible for activity under your accounts and for users you invite.",
+      "You must not break the law or infringe privacy, intellectual property or other rights; send spam or messages to people who have not opted in, including WhatsApp, SMS or email; upload malware, probe or attack our systems, or bypass security or usage limits; reverse engineer, copy, resell or build a competing product from the Platform except where law allows; use Platform or AI features to harass, deceive, impersonate, unlawfully discriminate or create illegal, exploitative, violent or hateful content; make fully automated decisions with legal or similarly significant effects without legally required human review and notices; or process special-category or highly regulated information, such as HIPAA health records, unless we agree in writing and sign required documents.",
+      "You are responsible for the data you put into the Platform, and for having a lawful basis, notices and consents to collect it and let us process it—including from employees, applicants, guests and customers. Where required, tell people they are interacting with an AI agent and that calls or chats may be recorded.",
+      "Surge helps calculate pay, taxes, statutory contributions and compliance tasks using the data and settings you provide. You remain responsible for reviewing payroll before it runs, filings and payments to authorities such as TAJ, NIS or the IRS, and employment decisions. We may suspend access if we reasonably believe you are breaching this section or creating a security or legal risk; where possible, we will explain why.",
+    ],
+  },
+  {
+    title: "AI features and large language models",
+    body: [
+      "The Platform includes AI features powered by our own models and third-party LLMs. What you or your end users submit is Input; what the feature generates is Output. As between you and us, you own Input and, to the extent the law allows, Output generated for you. We may use them only to provide, secure and support the Platform for you.",
+      "We do not use your Input, Output or customer data to train general-purpose models. We train or fine-tune custom models on your data only under a signed SOW, and those models are for your use.",
+      "Some features send Input to third-party model providers under their terms and our agreements. You agree not to use AI features in ways that breach those providers’ policies.",
+      "Output can be inaccurate, incomplete, biased or similar to content generated for others. Review it before relying on it, especially for legal, financial, medical, employment or safety decisions. Candidate rankings, readiness scores and similar outputs assist human judgment, not replace it.",
+      "When you configure an agent such as Vicki Ann, it acts on the information, policies, prices and instructions you provide. Keep those details current and are responsible for commitments the agent makes within its configured limits. Do not present an AI agent as human, and keep required disclosures enabled. We may update, replace or retire models; output may change as a result.",
+    ],
+  },
+  {
+    title: "Third-party integrations, WhatsApp and social platforms",
+    body: [
+      "The Platform connects to services we do not own or control, including AWS, Google Cloud, Microsoft Azure, Snowflake, Databricks, Salesforce, QuickBooks Online, Sage Intacct, Unanet, Noyo, messaging and voice carriers, and social platforms. Your use is subject to each service’s terms, licences and privacy policy; you are responsible for holding required accounts and licences.",
+      "If you use WhatsApp, follow the WhatsApp Business Terms, Messaging Policy and Commerce Policy. Get opt-in before business-initiated messages, promptly honour opt-outs, use approved templates where required, and do not send prohibited content. Meta may charge for some conversations; charges pass through as stated in your order.",
+      "If you connect Facebook, Instagram or another social account, follow that platform’s terms and authorise us to access the account only as needed for the features you enable. We are independent of platform vendors and are not responsible for their availability, accuracy, security, pricing, API changes or account suspensions. If an integration changes or is withdrawn, we may change or discontinue the feature.",
+      "By connecting an integration, you instruct us to exchange data as configured and confirm you have the rights needed to do so.",
+    ],
+  },
+  {
+    title: "Data, intellectual property, fees and confidentiality",
+    body: [
+      "You own the data you and your users put into the Platform (Customer Data). You grant us a limited licence to host, process, transmit and display it only to provide, secure and support the Platform and Services under our Privacy Policy and DPA. We may use aggregated, de-identified statistics that do not identify you or any person to operate and improve products.",
+      "We own the Platform, software, AI agents, our own models, documentation, frameworks, templates, know-how and improvements. During a subscription, we grant you a non-exclusive, non-transferable right to use the Platform for your internal business purposes. Ownership of deliverables built specifically for you is set out in the SOW. We may use feedback without obligation.",
+      "Fees, billing periods and payment terms are in your order form, MSA or SOW. Unless stated otherwise, fees are payable in advance, non-refundable and exclude taxes, which you are responsible for. Third-party pass-through charges, such as WhatsApp conversation, carrier, cloud consumption or AI usage above your plan, may be billed separately. We may suspend access for invoices more than 30 days overdue after notice.",
+      "Each party keeps the other’s non-public business, technical and financial information confidential, uses it only to perform under these Terms and protects it with at least reasonable care. This does not cover public, already known or independently developed information, or information that must be disclosed by law (with notice where allowed).",
+    ],
+  },
+  {
+    title: "Warranties and disclaimers",
+    body: [
+      "We provide the Platform and Services with reasonable skill and care, consistent with industry standards. Any service levels are in your order or SOW.",
+      "Except as stated in a signed agreement, the website, Platform, AI features and Services are provided “as is” and “as available.” We disclaim other express or implied warranties, including merchantability, fitness for a particular purpose, non-infringement and that the Platform will be error-free or uninterrupted. We do not guarantee business outcomes, timelines, cost savings, regulatory approval or audit results. We are not a law firm, accounting firm, financial institution or insurer, and nothing we provide is legal, tax, financial or regulatory advice.",
+    ],
+  },
+  {
+    title: "Limitation of liability",
+    body: [
+      "To the maximum extent the law allows, neither party is liable for indirect, incidental, special, consequential or punitive damages, or lost profits, revenue, data or goodwill. Each party’s total liability arising from these Terms is limited to the fees you paid us in the 12 months before the event giving rise to the claim. These limits do not apply to payment obligations, a party’s breach of confidentiality, indemnity obligations, or where the law does not allow them.",
+    ],
+  },
+  {
+    title: "Indemnity",
+    body: [
+      "You will defend and indemnify us against third-party claims arising from your Customer Data, use of the Platform in breach of these Terms or the law, messages sent through the Platform, or breach of a third-party platform’s terms. We will defend and indemnify you against third-party claims that the Platform, used as permitted, infringes their intellectual property rights.",
+    ],
+  },
+  {
+    title: "Term, suspension and termination",
+    body: [
+      "These Terms apply while you use the website, Platform or Services. Subscriptions run for the term in your order and renew as stated there. Either party may terminate for material breach not cured within 30 days of written notice.",
+      "When use ends, your right to use the Platform ends. You may export Customer Data for 30 days; after that, we delete it within 90 days unless the law requires retention. Terms that by their nature should survive—including data, IP, fees owed, confidentiality, disclaimers, liability, indemnity and governing law—survive termination.",
+    ],
+  },
+  {
+    title: "Governing law and disputes",
+    body: [
+      "These Terms are governed by the laws of the Commonwealth of Pennsylvania, USA, and disputes go to the state or federal courts in Pennsylvania. Where Arrington Digital Ltd. is the contracting party, Jamaica law applies and disputes go to the courts of Jamaica.",
+      "Before going to court, both parties will try in good faith to resolve a dispute by negotiation for 30 days. Either party may seek urgent injunctive relief.",
+    ],
+  },
+  {
+    title: "General",
+    body: [
+      "We may update these Terms by posting a new version. For material changes, we will notify customers at least 30 days in advance; continued use after the effective date means you accept them. You may not assign these Terms without our consent; we may assign them in a merger, acquisition or sale of assets.",
+      "Neither party is liable for delays caused by events beyond its reasonable control. If a provision is unenforceable, the rest remains in effect. These Terms and any signed agreement are the entire agreement on their subject.",
+    ],
+  },
+  {
+    title: "Contact",
+    body: [
+      "B.Arren, LLC. DBA/Arrington Digital, Pennsylvania, USA, and Arrington Digital Ltd., 60 Knutsford Boulevard, Kingston, Jamaica.",
+      "Email info@arringtondx.com for general and legal questions, or for privacy matters.",
+    ],
+  },
+];
+
 const steps = [
   { number: "01", title: "CLOUD", sub: "Cloud & infrastructure.", copy: "Build the infrastructure and foundations your organization can rely on.", icon: Wifi, links: [["Cloud & infrastructure", "/enterprise"], ["Property network engineering", "/adx-propertyengineering"], ["Tools we work with", "/tools"]] },
   { number: "02", title: "SECURITY", sub: "Cybersecurity & compliance.", copy: "Protect systems and information with a considered, practical approach.", icon: ShieldCheck, links: [["Cybersecurity & compliance", "/enterprise"], ["Enterprise services", "/enterprise"], ["How we work", "/how-we-work"]] },
@@ -129,7 +346,7 @@ function Header({ navigate, onSearch }: { navigate: (path: string) => void; onSe
       ...["/what-we-do", "/adx-surge", "/vicki-ann", "/adx-launchiq"].map((path) => pages.find((p) => p.path === path)!).filter(Boolean),
       ...pages.filter((p) => ["Connect", "Run", "Brand", "Grow", "Enterprise"].includes(p.group) && p.group !== "Products"),
     ],
-    "Who We Help": pages.filter((p) => p.group === "Industries").concat(pages.filter((p) => p.path === "/who-we-help" || p.path === "/enterprise" || p.path.startsWith("/who-we-help/"))),
+    "Who We Help": pages.filter((p) => p.group === "Industries").concat(pages.filter((p) => p.path === "/enterprise" || p.path.startsWith("/who-we-help/"))),
     "Our Software": ["/adx-surge", "/vicki-ann", "/adx-launchiq"].map((path) => pages.find((p) => p.path === path)!).filter(Boolean),
     "Company": [
       ...["/about", "/adx-usa", "/adx-jamaica"].map((path) => pages.find((p) => p.path === path)!).filter(Boolean),
@@ -146,7 +363,7 @@ function Header({ navigate, onSearch }: { navigate: (path: string) => void; onSe
         {menuGroups.slice(0, 2).map((label) => <button key={label} className={`adx-nav-link ${open === label ? "text-[#E8621A]" : ""}`} aria-expanded={open === label} onClick={() => setOpen(open === label ? "" : label)}>{label}<ChevronDown size={13} /></button>)}
         <button className={`adx-nav-link ${open === "Our Software" ? "text-[#E8621A]" : ""}`} aria-expanded={open === "Our Software"} onClick={() => setOpen(open === "Our Software" ? "" : "Our Software")}>Our Software<ChevronDown size={13} /></button>
         <SiteLink to="/our-work" onNavigate={go} className="adx-nav-link">Our Work</SiteLink>
-        <SiteLink to="/start-a-conversation" onNavigate={go} className="adx-nav-link">Start here</SiteLink>
+        <SiteLink to="/contact" onNavigate={go} className="adx-nav-link">Contact</SiteLink>
         <button className={`adx-nav-link ${open === "Company" ? "text-[#E8621A]" : ""}`} aria-expanded={open === "Company"} onClick={() => setOpen(open === "Company" ? "" : "Company")}>Company<ChevronDown size={13} /></button>
       </nav>
       <div className="flex shrink-0 items-center gap-2">
@@ -168,7 +385,7 @@ function Header({ navigate, onSearch }: { navigate: (path: string) => void; onSe
     {mobileOpen && <div className="absolute left-0 right-0 top-full max-h-[calc(100dvh-72px)] overflow-auto border-t border-[#081020]/10 bg-[#FBFAF9] px-5 pb-7 pt-4 shadow-xl xl:hidden">
         <div className="mb-4 flex items-center justify-between gap-3 text-xs text-[#081020]/55"><span>United States · Jamaica<br /><span className="text-[10px] text-[#081020]/45">One connected team.</span></span><a href={CAL} target="_blank" rel="noreferrer" className="adx-action adx-action-primary min-h-10 px-3">Book a call <ArrowUpRight size={13} /></a></div>
       {menuGroups.map((label) => <div key={label} className="border-t border-[#081020]/10"><button onClick={() => setOpen(open === label ? "" : label)} className="flex min-h-[50px] w-full items-center justify-between text-left text-sm font-semibold" aria-expanded={open === label}>{label}<ChevronDown size={15} /></button>{open === label && <div className="grid grid-cols-1 gap-x-5 pb-3 sm:grid-cols-2">{(groupLists[label] || []).map((p) => <SiteLink key={p.path} to={p.path} onNavigate={go} className="flex min-h-11 items-center justify-between border-t border-[#081020]/[.07] py-2 text-sm">{p.title}<ArrowUpRight size={13} className="text-[#1552C2]" /></SiteLink>)}</div>}</div>)}
-      <div className="grid grid-cols-2 gap-x-4 border-t border-[#081020]/10 py-3 text-sm"><SiteLink to="/our-work" onNavigate={go} className="flex min-h-11 items-center">Our Work</SiteLink><SiteLink to="/start-a-conversation" onNavigate={go} className="flex min-h-11 items-center">Start here</SiteLink><SiteLink to="/tools" onNavigate={go} className="flex min-h-11 items-center">Tools</SiteLink><SiteLink to="/contact" onNavigate={go} className="flex min-h-11 items-center">Contact</SiteLink></div>
+      <div className="grid grid-cols-2 gap-x-4 border-t border-[#081020]/10 py-3 text-sm"><SiteLink to="/our-work" onNavigate={go} className="flex min-h-11 items-center">Our Work</SiteLink><SiteLink to="/contact" onNavigate={go} className="flex min-h-11 items-center">Contact</SiteLink><SiteLink to="/tools" onNavigate={go} className="flex min-h-11 items-center">Tools</SiteLink><SiteLink to="/how-we-work" onNavigate={go} className="flex min-h-11 items-center">How we work</SiteLink></div>
     </div>}
   </header>;
 }
@@ -181,7 +398,7 @@ function SearchOverlay({ onClose, navigate }: { onClose: () => void; navigate: (
   closeRef.current = onClose;
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return pages.filter((p) => !["Home", "Case study template", "404", "Privacy", "Terms"].includes(p.title)).slice(0, 8);
+    if (!q) return pages.filter((p) => !["Home", "Case study template", "404", "Privacy Policy", "Terms of Service"].includes(p.title)).slice(0, 8);
     return pages.filter((p) => `${p.title} ${p.group} ${p.description} ${p.points?.join(" ") || ""}`.toLowerCase().includes(q)).slice(0, 12);
   }, [query]);
   useEffect(() => {
@@ -216,7 +433,7 @@ function SearchOverlay({ onClose, navigate }: { onClose: () => void; navigate: (
 function Footer({ navigate }: { navigate: (path: string) => void }) {
   const companyLinks = [
     ...["/about", "/adx-usa", "/adx-jamaica"].map((path) => pages.find((p) => p.path === path)!).filter(Boolean),
-    ...pages.filter((p) => ["Company", "Start here", "Enterprise", "Legal"].includes(p.group) && p.path !== "/our-work/client-slug" && !["/about", "/adx-usa", "/adx-jamaica"].includes(p.path)),
+    ...pages.filter((p) => ["Company", "Enterprise", "Legal"].includes(p.group) && p.path !== "/our-work/client-slug" && !["/about", "/adx-usa", "/adx-jamaica"].includes(p.path)),
   ];
   const groups = [
     { title: "PRODUCTS · CONNECT · RUN", links: pages.filter((p) => ["Products", "Connect", "Run"].includes(p.group)) },
@@ -234,13 +451,55 @@ function Footer({ navigate }: { navigate: (path: string) => void }) {
          <div><div className="adx-mono mb-3 text-[9px] tracking-[.14em] text-white/45">CONTACT</div><p>Level 9, 60 Knutsford Blvd, Kingston, Jamaica</p><p className="mt-1">Pennsylvania, USA</p><a href={`mailto:${EMAIL}`} className="mt-2 inline-flex min-h-8 items-center text-white/85 hover:text-white">{EMAIL}</a></div>
          <div><div className="adx-mono mb-3 text-[9px] tracking-[.14em] text-white/45">REGIONS</div><p>United States · Jamaica</p></div>
       </div>
-       <div className="flex flex-col gap-3 pt-5 text-[10px] text-white/40 sm:flex-row sm:items-start sm:justify-between"><span>© 2026 Arrington Digital. All rights reserved.</span><span className="max-w-xl">Arrington Digital serves organizations across the United States and Jamaica.</span><div className="flex gap-4"><SiteLink to="/legal/privacy" onNavigate={navigate}>Privacy</SiteLink><SiteLink to="/legal/terms" onNavigate={navigate}>Terms</SiteLink></div></div>
+        <div className="flex flex-col gap-3 pt-5 text-[10px] text-white/40 sm:flex-row sm:items-start sm:justify-between"><span>© 2026 Arrington Digital. All rights reserved.</span><span className="max-w-xl">Arrington Digital serves organizations across the United States and Jamaica.</span><div className="flex gap-4"><SiteLink to="/legal/privacy-policy" onNavigate={navigate}>Privacy</SiteLink><SiteLink to="/legal/terms-of-service" onNavigate={navigate}>Terms</SiteLink></div></div>
     </div>
   </footer>;
 }
 
 function CTA({ title = "Tell us what you’re building.", copy = "A new initiative, platform refresh or digital experience—we’ll map the right next step together." }: { title?: string; copy?: string }) {
   return <section className="bg-[#E8621A] px-5 py-14 text-white sm:px-8 sm:py-16"><div className="adx-container flex flex-col gap-8 md:flex-row md:items-end md:justify-between"><div><Eyebrow light>YOUR NEXT CHAPTER STARTS HERE</Eyebrow><h2 className="mt-5 max-w-[670px] text-4xl font-medium leading-[1.03] tracking-[-.055em] sm:text-6xl">{title}</h2><p className="mt-4 max-w-[550px] text-sm leading-6 text-white/85">{copy}</p></div><div className="shrink-0"><a href={CAL} target="_blank" rel="noreferrer" className="adx-action adx-action-dark min-h-[54px] px-6">Book a call <ArrowUpRight size={16} /></a><div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-xs text-white/85"><a className="inline-flex items-center gap-2" href={`mailto:${EMAIL}`}><Mail size={13} />{EMAIL}</a></div></div></div></section>;
+}
+
+function LegalLandingPage({ page, navigate }: { page: Page; navigate: (path: string) => void }) {
+  const isPrivacy = page.path === "/legal/privacy-policy";
+  const sections = isPrivacy ? privacyPolicySections : termsOfServiceSections;
+  const visual = pageVisuals[page.path];
+  return <>
+    <section className="bg-[#081020] px-5 pb-8 pt-8 text-white sm:px-6 sm:pb-12 sm:pt-10">
+      <div className="adx-container">
+        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-[11px] text-white/50"><SiteLink to="/" onNavigate={navigate} className="hover:text-white">Home</SiteLink><span>/</span><span className="text-white/85">{page.title}</span></nav>
+        <div className="grid overflow-hidden border border-white/15 lg:grid-cols-[.88fr_1.12fr]">
+          <div className="flex min-h-[360px] flex-col justify-between bg-[#E8621A] px-6 py-7 text-[#081020] sm:px-10 sm:py-10 lg:min-h-[490px] lg:px-12 lg:py-12">
+            <div className="flex items-center justify-between gap-3 border-b border-[#081020]/25 pb-4"><Eyebrow>LEGAL / ADX</Eyebrow><span className="adx-mono text-[9px] tracking-[.13em] text-[#081020]/55">2026</span></div>
+            <div className="py-8"><h1 className="max-w-[600px] text-[clamp(2.8rem,6vw,5.3rem)] font-medium leading-[.93] tracking-[-.075em]">{page.title}</h1><p className="mt-5 max-w-[540px] text-sm leading-7 text-[#081020]/75">{isPrivacy ? "Clear information about the personal data we handle, the safeguards we use and the choices you have." : "The business terms that support a clear working relationship with Arrington Digital."}</p><p className="adx-mono mt-7 text-[9px] tracking-[.14em] text-[#081020]/60">LAST UPDATED · OCTOBER 17, 2026</p></div>
+            <div className="border-t border-[#081020]/25 pt-4"><span className="adx-mono text-[9px] tracking-[.13em] text-[#081020]/60">UNITED STATES · JAMAICA</span></div>
+          </div>
+          <figure className="relative min-h-[280px] overflow-hidden bg-[#121926] sm:min-h-[380px] lg:min-h-[490px]">
+            <img src={visual.src} alt={visual.alt} className="absolute inset-0 h-full w-full object-cover" />
+            <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,16,32,.08),transparent_35%,rgba(8,16,32,.76))]" />
+            <figcaption className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-4 sm:bottom-8 sm:left-8 sm:right-8"><span className="adx-mono text-[9px] tracking-[.14em] text-white/85">{visual.label}</span><span className="adx-mono text-[9px] text-white/55">ADX / LEGAL</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+    <section className="adx-container px-5 py-12 sm:px-8 sm:py-16">
+      <div className="grid gap-8 md:grid-cols-[.54fr_1.46fr]">
+        <div className="md:sticky md:top-28 md:self-start"><Eyebrow>POLICY <span className="text-[#222]/35">/</span> CONTENTS</Eyebrow><h2 className="adx-heading mt-4">{isPrivacy ? "Personal information, clearly handled." : "Using ADX, clearly understood."}</h2><p className="adx-copy mt-4 max-w-[320px]">Open a section to read the full details. For a question about this policy, contact our team directly.</p><a href={`mailto:${isPrivacy ? "privacy@arringtondx.com" : EMAIL}`} className="adx-text-link mt-5">{isPrivacy ? "Email privacy" : "Email Arrington Digital"} <ArrowUpRight size={14} /></a></div>
+        <div className="border-t border-[#081020]/15">
+          {sections.map((section, index) => <details key={section.title} open={index === 0} className="group border-b border-[#081020]/15">
+            <summary className="flex cursor-pointer list-none items-start gap-4 py-5 [&::-webkit-details-marker]:hidden">
+              <span className="adx-mono min-w-8 pt-1 text-[10px] tracking-[.12em] text-[#E8621A]">{String(index + 1).padStart(2, "0")}</span>
+              <span className="flex min-w-0 flex-1 items-start justify-between gap-4"><span className="text-lg font-medium leading-tight tracking-[-.025em] sm:text-xl">{section.title}</span><ChevronDown size={17} className="mt-1 shrink-0 text-[#1552C2] transition-transform group-open:rotate-180" /></span>
+            </summary>
+            <div className="space-y-4 pb-6 pl-12 pr-2 sm:pl-12">
+              {section.body.map((paragraph, paragraphIndex) => <p key={`${section.title}-${paragraphIndex}`} className="max-w-[760px] text-sm leading-7 text-[#081020]/70">{paragraph}</p>)}
+            </div>
+          </details>)}
+        </div>
+      </div>
+    </section>
+    <section className="bg-[#F2ECE8] px-5 py-8 sm:px-8"><div className="adx-container flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><p className="text-sm text-[#081020]/70">{isPrivacy ? "Privacy questions and requests" : "General and legal questions"}</p><a href={`mailto:${isPrivacy ? "privacy@arringtondx.com" : EMAIL}`} className="adx-text-link">{isPrivacy ? "privacy@arringtondx.com" : EMAIL}<ArrowUpRight size={14} /></a></div></section>
+  </>;
 }
 
 function SurgeLandingPage({ navigate }: { navigate: (path: string) => void }) {
@@ -269,7 +528,7 @@ function SurgeLandingPage({ navigate }: { navigate: (path: string) => void }) {
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#081020]/25 pt-4"><span className="adx-mono text-[9px] tracking-[.13em] text-[#081020]/65">MULTI-LOCATION · MULTI-PROPERTY</span><span className="text-[11px] text-[#081020]/65">One connected record.</span></div>
           </div>
-          <div className="relative flex min-h-[420px] flex-col justify-between overflow-hidden bg-[#101a2b] p-5 sm:p-8 lg:min-h-[610px] lg:p-10">
+          <div className="relative flex min-h-[420px] flex-col justify-between overflow-hidden bg-[#101a2b] p-5 sm:p-8 lg:min-h-[610px] lg:p-10" style={{ backgroundImage: "linear-gradient(120deg, rgba(16,26,43,.76), rgba(16,26,43,.91)), url('/__mockup/images/arrington-digital-surge-operations.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
             <div className="flex items-center justify-between border-b border-white/15 pb-4"><span className="adx-mono text-[9px] tracking-[.14em] text-white/70">SURGE / PORTFOLIO VIEW</span><span className="border border-[#E8621A]/50 px-2 py-1 text-[8px] tracking-[.12em] text-[#F0A24A]">ILLUSTRATIVE</span></div>
             <div className="my-8">
               <p className="adx-mono text-[9px] tracking-[.14em] text-white/45">CONNECTED OPERATIONS</p>
@@ -321,7 +580,7 @@ function VickiAnnLandingPage({ navigate }: { navigate: (path: string) => void })
             <div className="py-8"><p className="adx-mono mb-4 text-[9px] tracking-[.15em] text-[#081020]/60">VICKI ANN · BUILT INTO ADX SURGE</p><h1 className="max-w-[620px] text-[clamp(2.8rem,5.8vw,5.4rem)] font-medium leading-[.94] tracking-[-.075em]">The front desk that never clocks out.</h1><p className="mt-6 max-w-[500px] text-[15px] leading-7 text-[#081020]/80">One guest conversation across phone, SMS, WhatsApp and web chat—with reservations, answers and contextual handoffs connected to Surge.</p><div className="mt-7 flex flex-wrap gap-3"><a href={CAL} target="_blank" rel="noreferrer" className="adx-action adx-action-dark min-h-[50px] px-5">Talk through Vicki Ann <ArrowUpRight size={15} /></a><SiteLink to="/adx-surge" onNavigate={navigate} className="adx-action min-h-[50px] border border-[#081020]/40 px-5 text-[#081020]">Explore ADX Surge <ArrowRight size={15} /></SiteLink></div></div>
             <div className="border-t border-[#081020]/25 pt-4"><span className="adx-mono text-[9px] tracking-[.13em] text-[#081020]/65">PHONE · TEXT · WHATSAPP · WEB CHAT</span></div>
           </div>
-          <div className="relative flex min-h-[480px] items-center justify-center overflow-hidden bg-[#111a2a] p-5 sm:p-8 lg:min-h-[590px]">
+          <div className="relative flex min-h-[480px] items-center justify-center overflow-hidden bg-[#111a2a] p-5 sm:p-8 lg:min-h-[590px]" style={{ backgroundImage: "linear-gradient(120deg, rgba(17,26,42,.64), rgba(17,26,42,.88)), url('/__mockup/images/arrington-digital-hotel-concierge.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
             <div aria-hidden="true" className="absolute inset-6 border border-white/10 sm:inset-10" />
             <div className="relative z-10 w-full max-w-[450px] border border-white/15 bg-[#081020] p-5 sm:p-7">
               <div className="flex items-center gap-3 border-b border-white/10 pb-4"><img src="/__mockup/images/arrington-digital-vicki-ann-avatar.png" alt="Vicki Ann, a hospitality AI front desk assistant" className="h-14 w-14 shrink-0 object-cover" /><div><h2 className="text-sm font-semibold">Vicki Ann</h2><p className="mt-1 text-[10px] text-white/50">Resort concierge · WhatsApp</p></div><span className="ml-auto border border-[#E8621A]/40 px-2 py-1 text-[8px] tracking-[.12em] text-[#F0A24A]">SAMPLE</span></div>
@@ -354,10 +613,10 @@ function LaunchIQLandingPage({ navigate }: { navigate: (path: string) => void })
         <div className="grid overflow-hidden border border-white/15 lg:grid-cols-[.86fr_1.14fr]">
           <div className="flex min-h-[520px] flex-col justify-between bg-[#101a2b] px-6 py-7 sm:px-10 sm:py-10 lg:min-h-[620px] lg:px-12 lg:py-12">
             <div className="flex items-center justify-between gap-4 border-b border-white/15 pb-4"><Eyebrow light>PRODUCT / LIFE SCIENCES</Eyebrow><span className="adx-mono text-[9px] tracking-[.13em] text-white/45">DECISION INTELLIGENCE</span></div>
-            <div className="py-8"><img src="/__mockup/images/arrington-digital-launch-iq-logo.png" alt="Launch IQ — Cloud-Native Intelligence Platform" className="mb-8 h-auto w-[230px] max-w-full object-contain object-left sm:w-[290px]" /><h1 className="max-w-[620px] text-[clamp(2.7rem,5.4vw,5rem)] font-medium leading-[.94] tracking-[-.07em]">Know what moves a launch toward ready.</h1><p className="mt-6 max-w-[510px] text-sm leading-7 text-white/65">Launch IQ connects readiness, dependencies, risk and business impact—so leaders can see what a change means and decide what to do next.</p><div className="mt-7 flex flex-wrap gap-3"><a href={CAL} target="_blank" rel="noreferrer" className="adx-action adx-action-primary min-h-[50px] px-5">Talk about Launch IQ <ArrowUpRight size={15} /></a><a href="#launch-model" className="adx-action adx-action-ghost min-h-[50px] px-5">Explore the model <ArrowDown size={15} /></a></div></div>
+            <div className="py-8"><div className="mb-8 h-[132px] w-[230px] max-w-full overflow-hidden sm:h-[166px] sm:w-[290px]"><img src="/__mockup/images/arrington-digital-launch-iq-logo.png" alt="LaunchIQ" className="h-full w-full object-cover object-top" /></div><h1 className="max-w-[620px] text-[clamp(2.7rem,5.4vw,5rem)] font-medium leading-[.94] tracking-[-.07em]">Know what moves a launch toward ready.</h1><p className="mt-6 max-w-[510px] text-sm leading-7 text-white/65">Launch IQ connects readiness, dependencies, risk and business impact—so leaders can see what a change means and decide what to do next.</p><div className="mt-7 flex flex-wrap gap-3"><a href={CAL} target="_blank" rel="noreferrer" className="adx-action adx-action-primary min-h-[50px] px-5">Talk about Launch IQ <ArrowUpRight size={15} /></a><a href="#launch-model" className="adx-action adx-action-ghost min-h-[50px] px-5">Explore the model <ArrowDown size={15} /></a></div></div>
             <div className="border-t border-white/15 pt-4"><span className="adx-mono text-[9px] tracking-[.13em] text-white/45">POWERED BY NIMBLE · COGNITIVE DIGITAL TWIN</span></div>
           </div>
-          <div className="relative flex min-h-[460px] items-center overflow-hidden bg-[#0b1320] p-4 sm:p-8 lg:min-h-[620px]">
+          <div className="relative flex min-h-[460px] items-center overflow-hidden bg-[#0b1320] p-4 sm:p-8 lg:min-h-[620px]" style={{ backgroundImage: "linear-gradient(120deg, rgba(11,19,32,.78), rgba(11,19,32,.91)), url('/__mockup/images/arrington-digital-pharma-team.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
             <div className="w-full border border-white/15 bg-[#101a2b] p-4 sm:p-6">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4"><div><div className="adx-mono text-[9px] tracking-[.14em] text-[#F0A24A]">NIMBLE / COMMAND CENTER</div><p className="mt-1 text-sm font-medium">Portfolio overview</p></div><span className="border border-white/15 px-2 py-1 text-[8px] tracking-[.1em] text-white/50">ILLUSTRATIVE CONCEPT UI</span></div>
               <div className="mt-4 grid grid-cols-2 gap-2">
@@ -505,7 +764,7 @@ function HomePage({ navigate }: { navigate: (path: string) => void }) {
 
       <section className="relative overflow-hidden bg-[#F2ECE8] py-16 sm:py-20"><div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 border border-[#1552C2]/15" /><div className="adx-container relative"><div className="grid gap-6 md:grid-cols-[1fr_.6fr] md:items-end"><div><Eyebrow>INDUSTRIES + AUDIENCES <span className="text-[#222]/35">/</span> U.S. + JAMAICA</Eyebrow><h2 className="adx-heading max-w-[700px]">Different worlds. Connected challenges.</h2></div><p className="adx-copy max-w-[370px] md:justify-self-end">Each numbered path includes a short view of the work, with deeper detail on its own page.</p></div>
       <div className="mt-10 grid gap-0 border-t border-[#081020]/15 sm:grid-cols-2 xl:grid-cols-3">{industryDirectory.map((item) => <SiteLink key={item.path} to={item.path} onNavigate={navigate} className="group grid min-h-[178px] grid-cols-[42px_1fr] gap-3 border-b border-[#081020]/15 py-5 sm:px-4"><span className="adx-mono pt-1 text-[10px] tracking-[.12em] text-[#E8621A]">{item.number}</span><span><span className="flex items-start justify-between gap-3 text-lg font-medium leading-tight tracking-[-.035em]"><span>{item.title}</span><ArrowUpRight size={15} className="mt-1 shrink-0 text-[#1552C2] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></span><span className="mt-3 block max-w-[380px] text-sm leading-6 text-[#081020]/65">{item.blurb}</span></span></SiteLink>)}</div>
-      <div className="mt-5 flex flex-col gap-2 border-t border-[#081020]/15 pt-5 text-sm sm:flex-row sm:items-center sm:justify-between"><span className="text-[#081020]/65">ADX brings connected capabilities to each market.</span><SiteLink to="/who-we-help" onNavigate={navigate} className="adx-text-link">Explore all audiences <ArrowRight size={14} /></SiteLink></div>
+       <div className="mt-5 flex flex-col gap-2 border-t border-[#081020]/15 pt-5 text-sm sm:flex-row sm:items-center sm:justify-between"><span className="text-[#081020]/65">ADX brings connected capabilities to each market.</span><SiteLink to="/contact" onNavigate={navigate} className="adx-text-link">Talk through your industry <ArrowRight size={14} /></SiteLink></div>
     </div></section>
 
       <section className="bg-[#081020] py-16 text-white sm:py-24"><div className="adx-container grid gap-10 md:grid-cols-[.8fr_1.2fr] md:items-center"><div><Eyebrow light>HOW WE WORK</Eyebrow><h2 className="mt-5 max-w-[470px] text-4xl font-medium leading-[1.04] tracking-[-.055em] sm:text-5xl">One connected view.<br /><span className="text-[#E8621A]">Clear next steps.</span></h2><p className="mt-6 max-w-[360px] text-sm leading-7 text-white/65">Technology and digital experience work better when they are considered together, around the needs of your organization.</p></div><div className="grid sm:grid-cols-2">{[["01","Start with the context","Understand the organization, the people and what needs to happen next."],["02","Shape the right scope","Map a focused approach to the work and agree on next steps."],["03","Build alongside your team","Coordinate work with the people who will use and support it."],["04","Support the transition","Test, hand over and continue to support what we build."]].map(([n,title,body])=><div key={n} className="border-t border-white/20 py-5 sm:px-5"><div className="adx-mono text-[10px] tracking-[.14em] text-[#E8621A]">{n}</div><h3 className="mt-3 text-lg font-medium">{title}</h3><p className="mt-2 max-w-[270px] text-sm leading-6 text-white/60">{body}</p></div>)}</div></div></section>
@@ -531,7 +790,7 @@ function HomePage({ navigate }: { navigate: (path: string) => void }) {
             <div className="flex items-center justify-between border-t border-[#081020]/15 pt-4 text-xs font-semibold"><span>Explore this capability</span><ArrowUpRight size={16} className="text-[#1552C2] transition group-hover:-translate-y-1 group-hover:translate-x-1" /></div>
           </SiteLink>)}
         </div>
-        <div className="mt-5 flex flex-col gap-2 border-t border-[#081020]/15 pt-5 text-sm sm:flex-row sm:items-center sm:justify-between"><span className="text-[#081020]/65">Have a broader challenge in mind?</span><SiteLink to="/start-a-conversation" onNavigate={navigate} className="adx-text-link">Start a conversation <ArrowRight size={14} /></SiteLink></div>
+        <div className="mt-5 flex flex-col gap-2 border-t border-[#081020]/15 pt-5 text-sm sm:flex-row sm:items-center sm:justify-between"><span className="text-[#081020]/65">Have a broader challenge in mind?</span><SiteLink to="/contact" onNavigate={navigate} className="adx-text-link">Talk with ADX <ArrowRight size={14} /></SiteLink></div>
       </div>
     </section>
 
@@ -699,6 +958,7 @@ function InteriorPage({ page, navigate }: { page: Page; navigate: (path: string)
   const is404 = page.path === "/404";
   const isJamaica = page.path === "/adx-jamaica";
   const isUSA = page.path === "/adx-usa";
+  if (page.path.startsWith("/legal/")) return <LegalLandingPage page={page} navigate={navigate} />;
   if (isUSA) return <USALandingPage navigate={navigate} />;
   if (isJamaica) return <JamaicaLandingPage page={page} navigate={navigate} />;
   if (page.path === "/adx-surge") return <SurgeLandingPage navigate={navigate} />;
@@ -712,23 +972,19 @@ function InteriorPage({ page, navigate }: { page: Page; navigate: (path: string)
     ? "Find your next step."
     : page.path === "/our-work"
       ? "Proof comes after permission."
-      : page.path === "/who-we-help"
-        ? "Different industries. Connected expertise."
-        : page.path === "/contact"
-          ? "Talk directly with our team."
-          : page.path === "/start-a-conversation"
-            ? "A clear start, together."
-            : page.group === "Industries"
-              ? `Technology for ${page.title.toLowerCase()}.`
-              : page.group === "Audiences"
-                ? "A better experience from first enquiry to next visit."
-                : page.group === "Grow"
-                  ? "Make the right message easier to find."
-                  : page.group === "Company"
-                    ? "People and practice, connected."
-                    : page.group === "Enterprise"
-                      ? "Foundations for complex organizations."
-                      : "A practical next step, shaped around you.";
+      : page.path === "/contact"
+        ? "Talk directly with our team."
+        : page.group === "Industries"
+          ? `Technology for ${page.title.toLowerCase()}.`
+          : page.group === "Audiences"
+            ? "A better experience from first enquiry to next visit."
+            : page.group === "Grow"
+              ? "Make the right message easier to find."
+              : page.group === "Company"
+                ? "People and practice, connected."
+                : page.group === "Enterprise"
+                  ? "Foundations for complex organizations."
+                  : "A practical next step, shaped around you.";
   return <>
     <section className="bg-[#081020] px-5 pb-8 pt-8 text-white sm:px-6 sm:pb-12 sm:pt-10">
       <div className="adx-container">
@@ -760,7 +1016,7 @@ function InteriorPage({ page, navigate }: { page: Page; navigate: (path: string)
         <div>
           <Eyebrow>{page.group.toUpperCase()} <span className="text-[#222]/35">/</span> THE DETAILS</Eyebrow>
           <h2 className="adx-heading max-w-[500px]">{detailHeading}</h2>
-          <p className="adx-copy mt-5 max-w-[410px]">{page.path === "/our-work" ? "Case studies stay hidden until the client, details and permission are confirmed. No results or client names are invented here." : page.path === "/contact" ? "No contact form. Choose a direct route to the team and keep your details with you." : page.path === "/who-we-help" ? "Explore industry pages shaped around the people, operating conditions and systems behind the work." : page.group === "Industries" ? `Explore the connected capabilities that can support ${page.title.toLowerCase()} organizations.` : "Start with context, then choose the services and people that fit the work."}</p>
+          <p className="adx-copy mt-5 max-w-[410px]">{page.path === "/our-work" ? "Case studies stay hidden until the client, details and permission are confirmed. No results or client names are invented here." : page.path === "/contact" ? "No contact form. Choose a direct route to the team and keep your details with you." : page.group === "Industries" ? `Explore the connected capabilities that can support ${page.title.toLowerCase()} organizations.` : "Start with context, then choose the services and people that fit the work."}</p>
           {page.path === "/contact" && <div className="mt-7 flex flex-col items-start gap-2"><a className="adx-text-link" href={CAL} target="_blank" rel="noreferrer">Schedule an introduction <ArrowUpRight size={14} /></a><a className="adx-text-link" href={`mailto:${EMAIL}`}><Mail size={14} />{EMAIL}</a></div>}
         </div>
         <div className="border-t border-[#081020]/15">{(page.points || []).map((point, index) => <div key={point} className="grid grid-cols-[44px_1fr] gap-4 border-b border-[#081020]/15 py-5"><span className="adx-mono pt-1 text-[10px] tracking-[.1em] text-[#E8621A]">0{index + 1}</span><p className="max-w-[660px] text-sm leading-6 text-[#081020]/75">{point}</p></div>)}</div>
@@ -768,11 +1024,17 @@ function InteriorPage({ page, navigate }: { page: Page; navigate: (path: string)
     </section>
     {page.path === "/about" && <section className="bg-[#081020] py-16 text-white sm:py-20"><div className="adx-container"><div className="grid gap-5 md:grid-cols-[1fr_.62fr] md:items-end"><div><Eyebrow light>MEET THE MINDS BEHIND ADX</Eyebrow><h2 className="mt-4 max-w-[700px] text-4xl font-medium leading-[1.02] tracking-[-.055em] sm:text-5xl">People behind the systems.</h2></div><p className="max-w-[430px] text-sm leading-6 text-white/65 md:justify-self-end">Technology, operations, growth and digital experience come together through the people who deliver the work.</p></div><div className="mt-10 grid gap-px bg-white/15 sm:grid-cols-2 lg:grid-cols-3">{teamMembers.map((member) => <article key={member.name} className="group bg-[#081020] p-3 sm:p-4"><div className="overflow-hidden bg-[#F2ECE8]"><img src={member.src} alt={member.name} loading="lazy" className="aspect-[4/4.7] w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" /></div><div className="pt-4"><h3 className="text-lg font-medium tracking-[-.025em]">{member.name}</h3><p className="mt-1 min-h-10 text-xs leading-5 text-white/55">{member.role}</p></div></article>)}</div></div></section>}
     {page.path === "/careers" && <>
+      <section className="bg-[#F2ECE8] py-14 sm:py-16">
+        <div className="adx-container grid gap-7 md:grid-cols-[.78fr_1.22fr] md:items-end">
+          <div><Eyebrow>OPEN ROLES <span className="text-[#222]/35">/</span> WORK WORTH DOING</Eyebrow><h2 className="adx-heading mt-4 max-w-[500px]">We don’t hire to fill seats.</h2></div>
+          <div className="max-w-[640px] md:justify-self-end"><p className="adx-copy">When we open a role, it’s because the work demands it. Check back or send your résumé—we keep strong candidates on file.</p><a href={`mailto:${EMAIL}?subject=Careers%20at%20Arrington%20Digital`} className="adx-text-link mt-5">Send your résumé <ArrowUpRight size={14} /></a></div>
+        </div>
+      </section>
       <section className="bg-[#F2ECE8] py-16 sm:py-20">
         <div className="adx-container">
           <div className="grid gap-6 md:grid-cols-[.82fr_1.18fr] md:items-end">
             <div><Eyebrow>TEAM STORIES <span className="text-[#222]/35">/</span> THE PEOPLE WHO BUILD IT</Eyebrow><h2 className="adx-heading mt-4 max-w-[570px]">Ambition, met with room to grow.</h2></div>
-            <p className="adx-copy max-w-[470px] md:justify-self-end">Real perspectives from the people doing the work across brand, strategy and digital growth.</p>
+            <p className="adx-copy max-w-[470px] md:justify-self-end">From solving complex enterprise challenges to seeing client results in real time, hear from the people who make the work happen every day.</p>
           </div>
           <div className="mt-9 grid gap-x-7 gap-y-10 border-t border-[#081020]/15 pt-6 lg:grid-cols-2">
             {employeeStories.map((story) => <article key={story.name} className="grid grid-cols-[88px_1fr] gap-4 sm:grid-cols-[120px_1fr] sm:gap-5">
@@ -789,42 +1051,49 @@ function InteriorPage({ page, navigate }: { page: Page; navigate: (path: string)
       <section className="bg-[#081020] py-16 text-white sm:py-20">
         <div className="adx-container">
           <div className="grid gap-8 md:grid-cols-[.72fr_1.28fr] md:items-start">
-            <div><Eyebrow light>HOW WE WORK</Eyebrow><h2 className="mt-4 max-w-[440px] text-4xl font-medium leading-[1.02] tracking-[-.055em] sm:text-5xl">Serious work. Room to do your best.</h2><p className="mt-5 max-w-[390px] text-sm leading-7 text-white/60">Remote-first by design, built on trust, autonomy and accountability across the U.S. and Jamaica.</p></div>
-            <div className="grid gap-px bg-white/15 sm:grid-cols-2 lg:grid-cols-3">
+            <div><Eyebrow light>HOW WE WORK</Eyebrow><h2 className="mt-4 max-w-[440px] text-4xl font-medium leading-[1.02] tracking-[-.055em] sm:text-5xl">We invest in the people who build this.</h2><p className="mt-5 max-w-[390px] text-sm leading-7 text-white/60">Arrington Digital is remote-first, built on autonomy, trust and performance. Our culture is the standard behind every decision, deliverable and interaction.</p></div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                ["Innovation", "Keep learning and evolving as the work changes."],
-                ["Integration", "Connect technology, marketing and operations."],
-                ["Excellence", "Give each engagement the attention it deserves."],
-                ["Transparency", "Be clear about decisions, progress and next steps."],
-                ["Partnership", "Show up consistently, from day one onward."],
-                ["Flexibility", "Make room for life, learning and good work."],
-              ].map(([title, copy]) => <article key={title} className="min-h-[145px] bg-[#081020] p-5"><span className="adx-mono text-[9px] tracking-[.13em] text-[#F0A24A]">ADX VALUE</span><h3 className="mt-4 text-lg font-medium">{title}</h3><p className="mt-2 text-xs leading-5 text-white/55">{copy}</p></article>)}
+                ["Innovation", "We continuously evolve our capabilities to stay ahead of market demands—across every industry and market we serve."],
+                ["Integration", "We believe in unified solutions over fragmented vendor relationships: one team across cloud, security, data, AI and marketing."],
+                ["Excellence", "Every solution gets the time and consideration needed to be genuinely best in class and personal to the business."],
+                ["Transparency", "We operate with clarity and honesty. Clients know where things stand and can trust every decision."],
+                ["Partnership", "We measure success by client success, showing up on day one as we do in year three and across every border."],
+              ].map(([title, copy]) => <article key={title} className="min-h-[145px] border border-white/15 p-5"><span className="adx-mono text-[9px] tracking-[.13em] text-[#F0A24A]">ADX VALUE</span><h3 className="mt-4 text-lg font-medium">{title}</h3><p className="mt-2 text-xs leading-5 text-white/55">{copy}</p></article>)}
             </div>
           </div>
-          <div className="mt-9 flex flex-wrap gap-2 border-t border-white/15 pt-5 text-[10px] text-white/60">
-            {["Flexible hours + PTO", "Health, dental + vision", "Learning stipend", "Paid parental leave", "Annual performance bonuses"].map((benefit) => <span key={benefit} className="border border-white/20 px-3 py-2">{benefit}</span>)}
+          <div className="mt-12 border-t border-white/15 pt-6"><Eyebrow light>BENEFITS <span className="text-white/35">/</span> BUILT FOR GOOD WORK</Eyebrow><h3 className="mt-3 text-2xl font-medium tracking-[-.04em]">Room to do great work—and live well.</h3>
+            <div className="mt-6 grid gap-px border border-white/15 bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                ["REWARD + RECOGNITION", ["Competitive salary", "Annual performance bonuses", "Referral bonus"]],
+                ["FLEXIBILITY AT WORK", ["Flexible hours", "Work from anywhere in the world", "Flexible PTO", "Paid company holidays"]],
+                ["HEALTH + WELLBEING", ["Health, dental + vision coverage", "Mental health programs and support", "Paid parental leave for every parent"]],
+                ["LEARNING + GROWTH", ["Annual learning stipend", "Training and conferences", "Career development opportunities"]],
+              ].map(([label, benefits]) => <article key={label as string} className="min-h-[180px] bg-[#081020] p-5"><span className="adx-mono text-[9px] tracking-[.13em] text-[#F0A24A]">{label as string}</span><ul className="mt-4 space-y-2 text-xs leading-5 text-white/65">{(benefits as string[]).map((benefit) => <li key={benefit} className="flex gap-2"><span className="text-[#E8621A]">—</span><span>{benefit}</span></li>)}</ul></article>)}
+            </div>
           </div>
         </div>
       </section>
     </>}
     {related.length > 0 && <section className="bg-[#F2ECE8] py-14"><div className="adx-container"><Eyebrow>KEEP EXPLORING <span className="text-[#222]/35">/</span> {page.group.toUpperCase()}</Eyebrow><div className="mt-7 grid gap-x-6 sm:grid-cols-2 lg:grid-cols-4">{related.map((r) => <SiteLink key={r.path} to={r.path} onNavigate={navigate} className="adx-page-card"><span className="adx-mono text-[9px] tracking-[.12em] text-[#E8621A]">{r.group.toUpperCase()}</span><span><span className="block text-lg font-medium tracking-[-.03em]">{r.title}</span><span className="mt-2 block text-xs leading-5 text-[#081020]/60">{r.description}</span></span><span className="mt-3 flex items-center gap-2 text-xs font-semibold text-[#1552C2]">Explore <ArrowRight size={13} /></span></SiteLink>)}</div></div></section>}
-    <CTA title={page.path === "/contact" ? "Talk through what comes next." : page.path === "/careers" ? "Build something that matters." : undefined} copy={page.path === "/contact" ? "Schedule an introduction or email the team directly. No form, no pressure." : page.path === "/careers" ? "Interested in future opportunities? Email the team and tell us what kind of work you want to do." : undefined} />
+     <CTA title={page.path === "/contact" ? "Talk through what comes next." : page.path === "/careers" ? "Build something that actually matters." : undefined} copy={page.path === "/contact" ? "Schedule an introduction or email the team directly. No form, no pressure." : page.path === "/careers" ? "Interested in future opportunities? Send us your résumé and tell us what kind of work you want to do." : undefined} />
   </>;
 }
 
 export function Homepage() {
-  const [path, setPath] = useState(window.location.hash.startsWith("#/") ? window.location.hash.slice(1) : "/");
+  const [path, setPath] = useState(() => resolveLegacyPath(window.location.hash.startsWith("#/") ? window.location.hash.slice(1) : "/"));
   const [searchOpen, setSearchOpen] = useState(false);
   const [top, setTop] = useState(true);
   const navigate = (nextPath: string) => {
-    const known = pages.some((p) => p.path === nextPath);
-    const finalPath = known ? nextPath : "/404";
+    const resolvedPath = resolveLegacyPath(nextPath);
+    const known = pages.some((p) => p.path === resolvedPath);
+    const finalPath = known ? resolvedPath : "/404";
     window.history.pushState({}, "", `${window.location.pathname}${window.location.search}#${finalPath}`);
     setPath(finalPath);
     window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   };
   useEffect(() => {
-    const pop = () => setPath(window.location.hash.startsWith("#/") ? window.location.hash.slice(1) : "/");
+    const pop = () => setPath(resolveLegacyPath(window.location.hash.startsWith("#/") ? window.location.hash.slice(1) : "/"));
     const scroll = () => setTop(window.scrollY < 24);
     const key = (event: KeyboardEvent) => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") { event.preventDefault(); setSearchOpen(true); } };
     window.addEventListener("popstate", pop);
