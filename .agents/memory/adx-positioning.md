@@ -14,3 +14,9 @@ The homepage hero should use a bold orange brand field, with “Build,” “Mar
 **Why:** the user wants a more attention-grabbing, industry-led first impression while preserving the existing logo, tagline, navigation, and palette; they later clarified the three tagline verbs should match and the brand abbreviation should be uppercase.
 
 **How to apply:** carry these preferences into future ADX homepage and hero revisions.
+
+Keep employee quotes and portraits from the live site. Do not display pricing or media-source credits. Use distinct images across landing pages, except for user-supplied product imagery. Exclude agriculture, car rental, and mobility; combine resorts, hotels, villas, and real estate as one category, with a numbered label and short blurb for each industry. Order the What We Do menu with What We Do first, then ADX Surge, Vicki Ann, and ADX LaunchIQ; order Company with About, U.S., and Jamaica first.
+
+**Why:** the user clarified which proof, imagery, industries, and navigation structure should be preserved or excluded.
+
+**How to apply:** keep these content and navigation rules consistent across the Arrington Digital homepage, menus, and landing pages.
